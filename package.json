@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@medusajs/admin": "7.1.10",
-    "@medusajs/cache-inmemory": "^1.8.9",
     "@medusajs/cache-redis": "^1.8.9",
     "@medusajs/event-bus-local": "^1.9.7",
     "@medusajs/event-bus-redis": "^1.8.10",
@@ -38,10 +37,7 @@
     "cors": "^2.8.5",
     "dotenv": "16.3.1",
     "express": "^4.17.2",
-    "medusa-fulfillment-manual": "^1.1.39",
     "medusa-interfaces": "^1.3.8",
-    "medusa-payment-manual": "^1.0.24",
-    "medusa-payment-stripe": "^6.0.7",
     "prism-react-renderer": "^2.0.4",
     "typeorm": "^0.3.16"
   },
@@ -63,7 +59,9 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "react": "^18.2.0",
+    "react-router-dom": "^6.13.0"
   },
   "jest": {
     "globals": {
@@ -90,5 +88,8 @@
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node"
+  },
+  "peerDependencies": {
+    "@medusajs/medusa": "1.17.4"
   }
 }
