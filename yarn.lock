@@ -630,7 +630,7 @@
     "@babel/helper-function-name" "^7.23.0"
     "@babel/helper-plugin-utils" "^7.22.5"
 
-"@babel/plugin-transform-instanceof@^7.12.1", "@babel/plugin-transform-instanceof@^7.8.3":
+"@babel/plugin-transform-instanceof@^7.12.1":
   version "7.23.3"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-instanceof/-/plugin-transform-instanceof-7.23.3.tgz#4a16e8521943cefe40a712c6859cb570ba186868"
   integrity sha512-M/vsWiG0LlprcACS//MF7HT9LltTThsal6Xhra6ovMngsbZQoDS9QqvjNRfPVvC9p5MgLHQIAYSxT06Vea0Q1Q==
@@ -1068,7 +1068,7 @@
   resolved "https://registry.yarnpkg.com/@babel/regjsgen/-/regjsgen-0.8.0.tgz#f0ba69b075e1f05fb2825b7fad991e7adbb18310"
   integrity sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==
 
-"@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.7", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.6", "@babel/runtime@^7.21.0", "@babel/runtime@^7.22.10", "@babel/runtime@^7.23.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.7", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.6", "@babel/runtime@^7.21.0", "@babel/runtime@^7.22.10", "@babel/runtime@^7.23.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.23.8"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.8.tgz#8ee6fe1ac47add7122902f257b8ddf55c898f650"
   integrity sha512-Y7KbAP984rn1VGMbGqKmBLio9V7y5Je9GvU4rQPCPinCyNfUcToxIXl06d59URp/F3LwinvODxab5N/G6qggkw==
@@ -2101,13 +2101,6 @@
     rollup "3.20.7"
     rollup-plugin-esbuild "5.0.0"
     ts-dedent "^2.2.0"
-
-"@medusajs/cache-inmemory@^1.8.9":
-  version "1.8.10"
-  resolved "https://registry.yarnpkg.com/@medusajs/cache-inmemory/-/cache-inmemory-1.8.10.tgz#0ff521c46a978ca284be99c60616ada7f5675554"
-  integrity sha512-CjjNjGgDNYR73YHIu0THTxA7KmqlmTtXJYwsWIy9/kAf0SjOUPS9ULSpSJCaR6+vBZRBlIYvs8XJs18upIwAQg==
-  dependencies:
-    "@medusajs/modules-sdk" "^1.12.3"
 
 "@medusajs/cache-redis@^1.8.9":
   version "1.9.0"
@@ -3341,6 +3334,11 @@
   resolved "https://registry.yarnpkg.com/@react-types/shared/-/shared-3.22.0.tgz#70f85aad46cd225f7fcb29f1c2b5213163605074"
   integrity sha512-yVOekZWbtSmmiThGEIARbBpnmUIuePFlLyctjvCbgJgGhz8JnEJOipLQ/a4anaWfzAgzSceQP8j/K+VOOePleA==
 
+"@remix-run/router@1.14.2":
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.14.2.tgz#4d58f59908d9197ba3179310077f25c88e49ed17"
+  integrity sha512-ACXpdMM9hmKZww21yEqWwiLws/UPLhNKvimN8RrYSqPSvB3ov7sLvAcfvaxePeLvccTQKGdkDIhLYApZVDFuKg==
+
 "@remix-run/router@1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.3.1.tgz#3bb0b6ddc0a276e8dc1138d08f63035e4e23e8bf"
@@ -4561,6 +4559,11 @@
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.22.0.tgz#7a786fcea64e229ed5d4308093dd644cdfaa895e"
   integrity sha512-OeLyBKBQoT265f5G9biReijeP8mBxNFwY7ZUu1dKL+YzqpG5q5z7J/N1eT8aWyKuhyDTiUHuKm5l+oIVzbtrjw==
 
+"@tanstack/query-core@5.17.9":
+  version "5.17.9"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.17.9.tgz#1dac85c7c674bdfd132fe7cd5cb898921000bdcf"
+  integrity sha512-8xcvpWIPaRMDNLMvG9ugcUJMgFK316ZsqkPPbsI+TMZsb10N9jk0B6XgPk4/kgWC2ziHyWR7n7wUhxmD0pChQw==
+
 "@tanstack/react-query@4.22.0":
   version "4.22.0"
   resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.22.0.tgz#aaa4b41a6d306be6958018c74a8a3bb3e9f1924c"
@@ -4568,6 +4571,13 @@
   dependencies:
     "@tanstack/query-core" "4.22.0"
     use-sync-external-store "^1.2.0"
+
+"@tanstack/react-query@5.17.9":
+  version "5.17.9"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.17.9.tgz#74826465c1b2ecde17c6d2f1d03f10b611ac2363"
+  integrity sha512-M5E9gwUq1Stby/pdlYjBlL24euIVuGbWKIFCbtnQxSdXI4PgzjTSdXdV3QE6fc+itF+TUvX/JPTKIwq8yuBXcg==
+  dependencies:
+    "@tanstack/query-core" "5.17.9"
 
 "@tanstack/react-table@^8.7.9":
   version "8.11.6"
@@ -4783,7 +4793,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@>=8.1.0":
+"@types/node@*":
   version "20.11.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.0.tgz#8e0b99e70c0c1ade1a86c4a282f7b7ef87c9552f"
   integrity sha512-o9bjXmDNcF7GbM4CNQpmi+TutCgap/K3w1JyKgxAjqx41zp9qlIAVFi0IhCNsJcXolEqLWhbFbEeL0PvYm4pcQ==
@@ -7212,7 +7222,7 @@ express-session@^1.17.3:
     safe-buffer "5.2.1"
     uid-safe "~2.1.5"
 
-express@4.18.2, express@^4.17.1, express@^4.17.2, express@^4.17.3, express@^4.18.2:
+express@4.18.2, express@^4.17.2, express@^4.17.3, express@^4.18.2:
   version "4.18.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.2.tgz#3fabe08296e930c796c19e3c516979386ba9fd59"
   integrity sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==
@@ -9421,36 +9431,10 @@ medusa-core-utils@1.2.1, medusa-core-utils@^1.2.0, medusa-core-utils@^1.2.1:
   resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.2.1.tgz#c95ce78fb5e2d532b5441c11575cbf99f6138fc2"
   integrity sha512-PBAm+5ODVcS9HREz7SH9LtiDY6/Fkwax+tqB5cTjujOiWSPuuj13ImH8eb9p6aVoOEvFtpDP4HL8TIijpJ6juw==
 
-medusa-fulfillment-manual@^1.1.39:
-  version "1.1.39"
-  resolved "https://registry.yarnpkg.com/medusa-fulfillment-manual/-/medusa-fulfillment-manual-1.1.39.tgz#d4a45cd885c5edab0f9713784a2668fe690e959c"
-  integrity sha512-tZaO36lt29j2W5Xye7YqnN1DPVPBYQS+/eBDvBiMh8SUYlXMgSGt3td/QZuVXelcn3C7SfGd07K/Qqcn49rFIA==
-  dependencies:
-    "@babel/plugin-transform-classes" "^7.9.5"
-    "@babel/plugin-transform-instanceof" "^7.8.3"
-    "@babel/runtime" "^7.7.6"
-    express "^4.17.1"
-    medusa-core-utils "^1.2.1"
-
 medusa-interfaces@^1.3.8:
   version "1.3.8"
   resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.3.8.tgz#80e5b962ab8ac5b7b630c2324a3b7aa301351d38"
   integrity sha512-S1uCwwbOaEnBy9TWwfBlfs9scLSUz/0GcD9p5EWyPLVXvnBfGTmLBt4HI6oj6h3fVd+92RTdrmVnhznRYnOvoQ==
-
-medusa-payment-manual@^1.0.24:
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/medusa-payment-manual/-/medusa-payment-manual-1.0.24.tgz#4836998d51e4b2be4d0ba7acf3016b35c0f85437"
-  integrity sha512-VcQJuuE86J+ePPmZPVp0961Gkjfvu9v/xII9jM5uOH2CsuMsLI3G8QOjDBxn+kiy+hiQFXD1ZoWDDuuFY/Wt8A==
-
-medusa-payment-stripe@^6.0.7:
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/medusa-payment-stripe/-/medusa-payment-stripe-6.0.7.tgz#b9a8357f1fdd5e0a7e8798855578882a364ae416"
-  integrity sha512-qpSSHJDW3+yCF7jY/53XiZeuJY5gXMFA33BAh0ipAlBC2OAqM/ZPYiiZNtDb8RaTYTTikhBOIqHxCaYYoFaPkw==
-  dependencies:
-    "@medusajs/utils" "^1.11.3"
-    body-parser "^1.19.0"
-    express "^4.17.1"
-    stripe "^11.10.0"
 
 medusa-react@^9.0.13:
   version "9.0.13"
@@ -10775,7 +10759,7 @@ qs@6.11.0:
   dependencies:
     side-channel "^1.0.4"
 
-qs@^6.10.3, qs@^6.11.0, qs@^6.11.2:
+qs@^6.10.3, qs@^6.11.2:
   version "6.11.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.11.2.tgz#64bea51f12c1f5da1bc01496f48ffcff7c69d7d9"
   integrity sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA==
@@ -11118,6 +11102,21 @@ react-router-dom@6.8.0:
   dependencies:
     "@remix-run/router" "1.3.1"
     react-router "6.8.0"
+
+react-router-dom@^6.13.0:
+  version "6.21.2"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.21.2.tgz#5fba851731a194fa32c31990c4829c5e247f650a"
+  integrity sha512-tE13UukgUOh2/sqYr6jPzZTzmzc70aGRP4pAjG2if0IP3aUT+sBtAKUJh0qMh0zylJHGLmzS+XWVaON4UklHeg==
+  dependencies:
+    "@remix-run/router" "1.14.2"
+    react-router "6.21.2"
+
+react-router@6.21.2:
+  version "6.21.2"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.21.2.tgz#8820906c609ae7e4e8f926cc8eb5ce161428b956"
+  integrity sha512-jJcgiwDsnaHIeC+IN7atO0XiSRCrOsQAHHbChtJxmgqG2IaYQXSnhqGb5vk2CU/wBQA12Zt+TkbuJjIn65gzbA==
+  dependencies:
+    "@remix-run/router" "1.14.2"
 
 react-router@6.8.0:
   version "6.8.0"
@@ -12035,14 +12034,6 @@ strip-json-comments@^3.0.1, strip-json-comments@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
-
-stripe@^11.10.0:
-  version "11.18.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-11.18.0.tgz#2b99ac712e81a5232f88568327d001960b454465"
-  integrity sha512-OUA32uhNoSoM6wOodyFbV+3IBCoO140uzdXmBArQ0S88D4EbH91xl2v+Ml1sKalcFKUBadHLeHfU/p9AbsOfGw==
-  dependencies:
-    "@types/node" ">=8.1.0"
-    qs "^6.11.0"
 
 style-loader@^3.3.3:
   version "3.3.4"
