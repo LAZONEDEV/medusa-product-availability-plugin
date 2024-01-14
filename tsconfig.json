@@ -17,7 +17,12 @@
     "jsx": "react-jsx",
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "checkJs": false
+    "checkJs": false,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/admin-api/*": ["./src/api/admin/*"],
+      "@/store-api/*": ["./src/store/admin/*"]
+    }
   },
   "include": ["src/"],
   "exclude": [
