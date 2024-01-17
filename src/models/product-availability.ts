@@ -1,11 +1,4 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-} from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { BaseEntity, Product, generateEntityId } from "@medusajs/medusa";
 import { Availability } from "./availability";
 
@@ -14,7 +7,7 @@ export class AvailabilityProduct extends BaseEntity {
   @Column("smallint", { nullable: true })
   quantity: number;
 
-  @OneToOne(() => Product)
+  @ManyToOne(() => Product, (product) => product.availabilities)
   @JoinColumn()
   product: Product;
 
