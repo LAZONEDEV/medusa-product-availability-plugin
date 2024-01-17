@@ -12,12 +12,6 @@ class AvailabilityService extends TransactionBaseService {
     this.availabilityProductService = config.availabilityProductService;
   }
 
-  async get(): Promise<Availability[]> {
-    const availabilityRepo = this.activeManager_.getRepository(Availability);
-
-    return await availabilityRepo.find();
-  }
-
   async create(data: CreateAvailabilityDto) {
     return this.atomicPhase_(async (entityManager) => {
       try {
