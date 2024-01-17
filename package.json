@@ -21,7 +21,7 @@
     "seed": "cross-env medusa seed -f ./data/seed.json",
     "start": "cross-env npm run build && medusa start",
     "start:custom": "cross-env npm run build && node --preserve-symlinks --trace-warnings index.js",
-    "dev": "cross-env npm run build:server && medusa develop",
+    "dev": "concurrently \"tsc-alias -w\" \"cross-env npm run build:server && medusa develop\"",
     "migration:create": "yarn build:server && npx typeorm migration:generate -d datasource.js",
     "prepare": "husky install",
     "lint": "lint-staged"
@@ -52,6 +52,7 @@
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.8",
     "babel-preset-medusa-package": "^1.1.19",
+    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "eslint": "^6.8.0",
     "husky": "^8.0.0",
