@@ -41,6 +41,11 @@ class AvailabilityService extends TransactionBaseService {
       skip: skipOffset,
       take: query.limit || defaultQuery.limit,
       order: { created_at: "DESC" },
+      relations: {
+        availabilityProducts: {
+          product: true,
+        },
+      },
     });
 
     return { availabilities };
