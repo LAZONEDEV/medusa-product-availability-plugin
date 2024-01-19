@@ -33,7 +33,7 @@ class AvailabilityService extends TransactionBaseService {
     }
 
     const skipOffset = query.page
-      ? Math.max(query.page * query.limit, 0)
+      ? Math.max(query.page * (query.limit || defaultQuery.limit), 0)
       : defaultQuery.page;
 
     const availabilities = await availabilityRepo.find({
