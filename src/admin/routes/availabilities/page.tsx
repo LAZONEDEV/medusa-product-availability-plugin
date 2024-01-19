@@ -1,4 +1,4 @@
-import { AvailabilitiesList } from "../../_components/availability/AvailabilitiesLists";
+import { AvailabilitiesList } from "../../components/availability/AvailabilitiesLists";
 import { RouteConfig } from "@medusajs/admin";
 import { Calendar, Plus } from "@medusajs/icons";
 import { Container, Heading, Button } from "@medusajs/ui";
