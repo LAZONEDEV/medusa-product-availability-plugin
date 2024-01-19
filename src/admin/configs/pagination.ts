@@ -1,0 +1,1 @@
+export const AVAILABILITY_PER_PAGE = 10;
