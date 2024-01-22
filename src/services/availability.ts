@@ -32,18 +32,25 @@ class AvailabilityService extends TransactionBaseService {
       whereClose.date = MoreThan(new Date());
     }
 
+    const queryLimit = query.limit || defaultQuery.limit;
+
     const skipOffset = query.page
-      ? Math.max(query.page * query.limit, 0)
+      ? Math.max(query.page * queryLimit, 0)
       : defaultQuery.page;
 
-    const availabilities = await availabilityRepo.find({
+    const [availabilities, totalCount] = await availabilityRepo.findAndCount({
       where: whereClose,
       skip: skipOffset,
-      take: query.limit || defaultQuery.limit,
+      take: queryLimit,
       order: { created_at: "DESC" },
+      relations: {
+        availabilityProducts: {
+          product: true,
+        },
+      },
     });
 
-    return { availabilities };
+    return { availabilities, totalCount };
   }
 
   async create(data: CreateAvailabilityDto) {
