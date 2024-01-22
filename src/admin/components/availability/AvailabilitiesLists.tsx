@@ -1,4 +1,4 @@
-import { Table, StatusBadge, Button } from "@medusajs/ui";
+import { Table, StatusBadge } from "@medusajs/ui";
 import AvailabilityProductsList from "./AvailabilityProductsList";
 import AvailabilitiesSkeleton from "./AvailabilitiesSkeleton";
 import { useGetAvailabilities } from "../../hooks/availabilities";
@@ -6,6 +6,7 @@ import { AvailabilityStatus } from "../../types/api";
 import { Pencil } from "@medusajs/icons";
 import ErrorView from "./ErrorView";
 import { Link } from "react-router-dom";
+import EmptyList from "./EmptyList";
 
 export function AvailabilitiesList() {
   const {
@@ -28,6 +29,10 @@ export function AvailabilitiesList() {
 
   if (error) {
     return <ErrorView onRetry={refetch} />;
+  }
+
+  if (availabilities.length > 0) {
+    return <EmptyList />;
   }
 
   return (
