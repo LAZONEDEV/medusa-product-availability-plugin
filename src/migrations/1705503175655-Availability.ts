@@ -8,11 +8,12 @@ export class Availability1705503175655 implements MigrationInterface {
       `CREATE TYPE "public"."availability_status_enum" AS ENUM('active', 'inactive')`,
     );
     await queryRunner.query(
-      `CREATE TABLE "availability" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "status" "public"."availability_status_enum" NOT NULL DEFAULT 'active', "date" TIMESTAMP NOT NULL, CONSTRAINT "PK_05a8158cf1112294b1c86e7f1d3" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "availability" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "status" "public"."availability_status_enum" NOT NULL DEFAULT 'active', "date" date NOT NULL, CONSTRAINT "UQ_e1d567785af01e81a94a8fcf59d" UNIQUE ("date"), CONSTRAINT "PK_05a8158cf1112294b1c86e7f1d3" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "availability_product" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "quantity" smallint, "productId" character varying, "availabilityId" character varying, CONSTRAINT "PK_8917f2b90ae8ef1156b90c4be72" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "availability_product" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "quantity" smallint, "productId" character varying, "availabilityId" character varying, CONSTRAINT "availability_product_unique_constraint" UNIQUE ("productId", "availabilityId"), CONSTRAINT "PK_8917f2b90ae8ef1156b90c4be72" PRIMARY KEY ("id"))`,
     );
+
     await queryRunner.query(
       `ALTER TABLE "availability_product" ADD CONSTRAINT "FK_976c28587ff9a0b4b9f65f5e5f0" FOREIGN KEY ("productId") REFERENCES "product"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
@@ -28,6 +29,14 @@ export class Availability1705503175655 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "availability_product" DROP CONSTRAINT "FK_976c28587ff9a0b4b9f65f5e5f0"`,
     );
+
+    await queryRunner.query(
+      `ALTER TABLE "product" DROP CONSTRAINT "FK_e0843930fbb8854fe36ca39dae1"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "product" DROP CONSTRAINT "FK_49d419fc77d3aed46c835c558ac"`,
+    );
+
     await queryRunner.query(`DROP TABLE "availability_product"`);
     await queryRunner.query(`DROP TABLE "availability"`);
     await queryRunner.query(`DROP TYPE "public"."availability_status_enum"`);
