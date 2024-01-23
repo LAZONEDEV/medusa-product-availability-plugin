@@ -5,7 +5,7 @@ import {
 } from "class-validator";
 import { dataSource } from "@medusajs/medusa/dist/loaders/database";
 
-const isExistsValidator = async (
+const doesExistValidator = async (
   value: string,
   validationArguments: ValidationArguments,
 ) => {
@@ -25,22 +25,52 @@ const isExistsValidator = async (
 };
 
 /**
- * Registers a decorator that checks if an entity exists in the database.
+ * Registers a decorator that checks if a record exists in the database.
  */
-export function IsExist(
+export function DoesExist(
   entityName: string,
   entityPropertyName: string,
-  validationOptions?: ValidationOptions,
+  options?: ValidationOptions,
 ) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
-      name: "isExist",
+      options,
+      propertyName,
+      name: "doesExist",
       target: object.constructor,
-      propertyName: propertyName,
       constraints: [entityName, entityPropertyName],
-      options: validationOptions,
       validator: {
-        validate: isExistsValidator,
+        validate: doesExistValidator,
+      },
+    });
+  };
+}
+
+const doesNotExistValidator = async (
+  value: string,
+  validationArguments: ValidationArguments,
+) => {
+  const response = await doesExistValidator(value, validationArguments);
+  return !response;
+};
+
+/**
+ * Registers a decorator that checks if a record does not exist in the database.
+ */
+export function DoesNotExist(
+  entityName: string,
+  entityPropertyName: string,
+  options?: ValidationOptions,
+) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      options,
+      propertyName,
+      name: "doesNotExist",
+      target: object.constructor,
+      constraints: [entityName, entityPropertyName],
+      validator: {
+        validate: doesNotExistValidator,
       },
     });
   };

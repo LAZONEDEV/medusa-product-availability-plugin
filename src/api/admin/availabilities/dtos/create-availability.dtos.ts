@@ -9,26 +9,34 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
-import { IsExist } from "@/utils/validator/is-exist";
+import { DoesNotExist, DoesExist } from "@/utils/validator/is-exist";
+import { IsUniquenessOnList } from "@/utils/validator/is-unity-on-list";
+import { ValidationErrorMessage } from "@/constants/validation-error-message";
 
 const arbitrarySmallIntMax = 30_000;
 const minAvailableQuantity = 1;
 
 export class CreateAvailabilityDto {
   @IsDateString()
+  @DoesNotExist("Availability", "date", {
+    message: ValidationErrorMessage.availabilityAlreadyExist,
+  })
   date: string;
 
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => CreateAvailabilityProductDto)
+  @IsUniquenessOnList("productId", {
+    message: ValidationErrorMessage.noDuplicateProdAvailability,
+  })
   availabilityProducts: CreateAvailabilityProductDto[];
 }
 
 export class CreateAvailabilityProductDto {
   @IsString()
-  @IsExist("Product", "id", {
-    message: "product with id $value does not exist",
+  @DoesExist("Product", "id", {
+    message: ValidationErrorMessage.productNotExists,
   })
   productId: string;
 
