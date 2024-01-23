@@ -2,10 +2,12 @@ import { TransactionBaseService } from "@medusajs/medusa";
 import { Availability } from "@/models/availability";
 import { CreateAvailabilityDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import AvailabilityProductService from "./availability-product";
-import InternalServerError from "@/error/InternalServerError";
 import { GetAvailabilitiesDto } from "@/api/admin/availabilities/dtos/get-availabilities.dtos";
-import { FindOneOptions, MoreThan } from "typeorm";
+import { FindOneOptions, MoreThan, QueryFailedError } from "typeorm";
 import { GetAvailabilitiesResponseDto } from "@/types/availability";
+import BadRequestError from "@/error/BadRequestError";
+import { checkAvailabilityDuplicationError } from "@/utils/check-error";
+import { ValidationErrorMessage } from "@/constants/validation-error-message";
 
 class AvailabilityService extends TransactionBaseService {
   protected availabilityProductService: AvailabilityProductService;
@@ -68,7 +70,16 @@ class AvailabilityService extends TransactionBaseService {
 
         return availability;
       } catch (error) {
-        throw new InternalServerError();
+        if (
+          error instanceof QueryFailedError &&
+          checkAvailabilityDuplicationError(error)
+        ) {
+          throw new BadRequestError(
+            ValidationErrorMessage.availabilityAlreadyExist,
+          );
+        }
+
+        throw error;
       }
     });
   }
