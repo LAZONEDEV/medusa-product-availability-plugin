@@ -1,4 +1,5 @@
-import InternalServerError from "@/error/InternalServerError";
+import BadRequestError from "@/error/BadRequestError";
+import ValidationError from "@/error/ValidationError";
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 
 type RequestHandlerType = (
@@ -12,16 +13,27 @@ export const createRequestHandler = (handler: RequestHandlerType) => {
       const result = await handler(req, res);
       res.json({ data: result });
     } catch (error) {
-      if (error instanceof InternalServerError) {
-        res.status(500).json({
-          message: error.message,
-          code: error.code,
-        });
+      console.error(error);
+
+      const response = {
+        message: error.message,
+        code: error.code,
+      };
+
+      if (error instanceof BadRequestError) {
+        res.status(400).json(response);
+        return;
       }
 
-      res.status(500).json({
-        message: error.message,
-      });
+      if (error instanceof ValidationError) {
+        res.status(400).json({
+          ...response,
+          errors: error.payload,
+        });
+        return;
+      }
+
+      res.status(500).json(response);
     }
   };
 };
