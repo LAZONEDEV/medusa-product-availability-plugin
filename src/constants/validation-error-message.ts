@@ -1,6 +1,6 @@
 export const ValidationErrorMessage = {
-  availabilityAlreadyExist: "Availability already exist for this date",
+  availabilityAlreadyExist: "Availability already exists for this date",
   noDuplicateProdAvailability:
-    "You can not create several availability for the same product",
+    "You can not create several availabilities for the same product on same availability",
   productNotExists: "product with id $value does not exist",
 };

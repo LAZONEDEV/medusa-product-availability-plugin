@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
-import { DoesNotExists, IsExists } from "@/utils/validator/is-exist";
+import { DoesNotExist, DoesExist } from "@/utils/validator/is-exist";
 import { IsUniquenessOnList } from "@/utils/validator/is-unity-on-list";
 import { ValidationErrorMessage } from "@/constants/validation-error-message";
 
@@ -18,7 +18,7 @@ const minAvailableQuantity = 1;
 
 export class CreateAvailabilityDto {
   @IsDateString()
-  @DoesNotExists("Availability", "date", {
+  @DoesNotExist("Availability", "date", {
     message: ValidationErrorMessage.availabilityAlreadyExist,
   })
   date: string;
@@ -35,7 +35,7 @@ export class CreateAvailabilityDto {
 
 export class CreateAvailabilityProductDto {
   @IsString()
-  @IsExists("Product", "id", {
+  @DoesExist("Product", "id", {
     message: ValidationErrorMessage.productNotExists,
   })
   productId: string;
