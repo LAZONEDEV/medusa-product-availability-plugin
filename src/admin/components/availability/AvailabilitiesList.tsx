@@ -31,7 +31,7 @@ export function AvailabilitiesList() {
     return <ErrorView onRetry={refetch} />;
   }
 
-  if (availabilities.length > 0) {
+  if (availabilities.length === 0) {
     return <EmptyList />;
   }
 
