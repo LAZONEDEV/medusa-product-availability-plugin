@@ -12,7 +12,7 @@ export class Availability extends BaseEntity {
   })
   status: AvailabilityStatus;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "date", unique: true })
   date: Date;
 
   @OneToMany(
