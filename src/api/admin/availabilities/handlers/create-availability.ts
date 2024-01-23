@@ -1,7 +1,8 @@
-import { MedusaRequest, validator } from "@medusajs/medusa";
+import { MedusaRequest } from "@medusajs/medusa";
 import { CreateAvailabilityDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import type AvailabilityService from "@/services/availability";
 import { createRequestHandler } from "@/utils/request-handler";
+import { validator } from "@/utils/validator/validator";
 
 export const createAvailability = createRequestHandler(
   async (req: MedusaRequest) => {
