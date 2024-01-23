@@ -1,7 +1,10 @@
 import { TransactionBaseService } from "@medusajs/medusa";
 import type { CreateAvailabilityProductDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import { AvailabilityProduct } from "@/models/product-availability";
-import InternalServerError from "@/error/InternalServerError";
+import { QueryFailedError } from "typeorm";
+import { checkProductAvailabilityDuplicationError } from "@/utils/check-error";
+import BadRequestError from "@/error/BadRequestError";
+import { ValidationErrorMessage } from "@/constants/validation-error-message";
 
 class AvailabilityProductService extends TransactionBaseService {
   async create(items: CreateAvailabilityProductDto[], availabilityId: string) {
@@ -11,7 +14,7 @@ class AvailabilityProductService extends TransactionBaseService {
       availability: { id: availabilityId },
     }));
 
-    this.atomicPhase_((entityManager) => {
+    await this.atomicPhase_(async (entityManager) => {
       try {
         const availabilityProdRepo =
           entityManager.getRepository(AvailabilityProduct);
@@ -20,9 +23,19 @@ class AvailabilityProductService extends TransactionBaseService {
           itemsWithAvailabilityId,
         );
 
-        return availabilityProdRepo.save(availabilities);
+        const result = await availabilityProdRepo.save(availabilities);
+        return result;
       } catch (error) {
-        throw new InternalServerError();
+        if (
+          error instanceof QueryFailedError &&
+          checkProductAvailabilityDuplicationError(error)
+        ) {
+          throw new BadRequestError(
+            ValidationErrorMessage.noDuplicateProdAvailability,
+          );
+        }
+
+        throw error;
       }
     });
   }
