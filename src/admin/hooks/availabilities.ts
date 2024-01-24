@@ -11,7 +11,7 @@ export const useGetAvailabilities = () => {
 
   const currentPage = Number(searchParams.get("page")) || 0;
 
-  const requestUrl = `${medusaApiRoutes.getAvailabilities}?page=${currentPage}&limit=${AVAILABILITY_PER_PAGE}`;
+  const requestUrl = `${medusaApiRoutes.availabilities}?page=${currentPage}&limit=${AVAILABILITY_PER_PAGE}`;
 
   const { data, isLoading, error, refetch } = useQuery({
     queryFn: () => medusaHttpClient.get<GetAvailabilityResponse>(requestUrl),
