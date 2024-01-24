@@ -53,3 +53,13 @@ export interface Product {
   external_id: null;
   metadata: null;
 }
+
+export interface CreateAvailabilityProductItem {
+  productId: string;
+  quantity: number;
+}
+
+export interface CreateAvailabilityDto {
+  date: Date;
+  availabilityProducts: CreateAvailabilityProductItem[];
+}
