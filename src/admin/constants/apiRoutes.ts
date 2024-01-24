@@ -1,5 +1,5 @@
 const medusaApiRoutes = {
-  getAvailabilities: "admin/availabilities",
+  availabilities: "admin/availabilities",
 };
 
 export default medusaApiRoutes;
