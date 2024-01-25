@@ -1,4 +1,5 @@
 import BadRequestError from "@/error/BadRequestError";
+import NotFoundError from "@/error/NotFoundError";
 import ValidationError from "@/error/ValidationError";
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 
@@ -19,6 +20,11 @@ export const createRequestHandler = (handler: RequestHandlerType) => {
         message: error.message,
         code: error.code,
       };
+
+      if (error instanceof NotFoundError) {
+        res.status(404).json(response);
+        return;
+      }
 
       if (error instanceof BadRequestError) {
         res.status(400).json(response);
