@@ -3,9 +3,7 @@ import { validationMessage } from "../messages/all";
 
 const productAvailabilitySchema = object({
   productId: string().required(validationMessage.requiredField),
-  quantity: number()
-    .required(validationMessage.requiredField)
-    .min(0, validationMessage.invalidQuantity),
+  quantity: number().min(1, validationMessage.invalidQuantity).nullable(),
 });
 
 export const createAvailabilitySchema = object({
