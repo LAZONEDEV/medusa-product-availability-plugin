@@ -61,8 +61,7 @@ class AvailabilityService extends TransactionBaseService {
         const availabilityRepo = entityManager.getRepository(Availability);
         const availability = availabilityRepo.create(data);
 
-        const savedAvailability = await availabilityRepo.save(availability);
-        console.log(savedAvailability);
+        await availabilityRepo.save(availability);
 
         await this.availabilityProductService.create(
           data.availabilityProducts,
