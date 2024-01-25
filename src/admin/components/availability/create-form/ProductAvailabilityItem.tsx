@@ -1,11 +1,19 @@
 import { Trash } from "@medusajs/icons";
-import { Heading, Input, Text, IconButton } from "@medusajs/ui";
+import {
+  Heading,
+  Input,
+  Text,
+  IconButton,
+  Checkbox,
+  Label,
+} from "@medusajs/ui";
+import { useId } from "react";
 
 interface ProductAvailabilityItemProps {
   image: string;
   title: string;
-  quantity: number;
-  onQuantityChange: (quantity: number) => void;
+  quantity: number | null;
+  onQuantityChange: (quantity: number | null) => void;
   onRemove: () => void;
 }
 
@@ -16,12 +24,23 @@ const ProductAvailabilityItem = ({
   title,
   onRemove,
 }: ProductAvailabilityItemProps) => {
+  const unlimitedFieldID = useId();
+  const allowUnlimited = quantity === null;
+
+  const onAllowUnlimited = (allowed: boolean) => {
+    if (allowed) {
+      onQuantityChange(null);
+    } else {
+      onQuantityChange(0);
+    }
+  };
+
   return (
     <div className="flex my-2 border rounded-lg">
       <img
         alt={title}
         src={image}
-        className="w-[70px] min-h-full rounded-tl-lg rounded-bl-lg object-cover"
+        className="w-[90px] min-h-full rounded-tl-lg rounded-bl-lg object-cover"
       />
 
       <div className="m-3 flex flex-1 flex-col justify-between">
@@ -38,13 +57,27 @@ const ProductAvailabilityItem = ({
             Quantité :
           </Text>
 
-          <Input
-            size="small"
-            min="0"
-            value={quantity}
-            type="number"
-            onChange={(e) => onQuantityChange(Number(e.target.value))}
-          />
+          <div>
+            <Input
+              disabled={allowUnlimited}
+              size="small"
+              min="0"
+              value={quantity || 0}
+              type="number"
+              onChange={(e) => onQuantityChange(Number(e.target.value))}
+            />
+
+            <div className="flex items-center space-x-2 mt-2">
+              <Label htmlFor={unlimitedFieldID} className="text-small">
+                Quantité illimitée
+              </Label>
+              <Checkbox
+                id={unlimitedFieldID}
+                checked={allowUnlimited}
+                onCheckedChange={onAllowUnlimited}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
