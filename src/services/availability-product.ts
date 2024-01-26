@@ -9,9 +9,10 @@ import UpdateProductAvailabilityDto from "@/api/admin/product-availabilities/dto
 import NotFoundError from "@/error/NotFoundError";
 import AvailabilityProductRepository from "@/repositories/product-availability";
 import UnprocessableEntityError from "@/error/UnprocessableEntityError";
+import { CreateProductsAvailabilitiesDto } from "@/api/admin/product-availabilities/dtos/create-product-availabilities.dtos";
 
 class AvailabilityProductService extends TransactionBaseService {
-  async create(
+  async createByEntityManager(
     items: CreateAvailabilityProductDto[],
     availabilityId: string,
     entityManager: EntityManager,
@@ -44,6 +45,16 @@ class AvailabilityProductService extends TransactionBaseService {
 
       throw error;
     }
+  }
+
+  async create(data: CreateProductsAvailabilitiesDto) {
+    return this.atomicPhase_((entityManager) => {
+      return this.createByEntityManager(
+        data.availabilityProducts,
+        data.availabilityId,
+        entityManager,
+      );
+    });
   }
 
   async update(id: string, data: UpdateProductAvailabilityDto) {
