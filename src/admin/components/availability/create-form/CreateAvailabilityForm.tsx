@@ -4,7 +4,7 @@ import DateField from "../../inputs/DateInput";
 import CreateProductAvailabilityList from "./CreateProductAvailabilityList";
 import { createAvailabilitySchema } from "../../../utils/validationSchema";
 import { CreateAvailabilityDto } from "../../../types/api";
-import { useCreateAvailabilityMutation } from "../../../hooks/availabilities";
+import { useCreateAvailabilityMutation } from "../../../hooks/availabilities/create-availability";
 import { useState } from "react";
 import type { ProductLike } from "@/admin/types";
 
