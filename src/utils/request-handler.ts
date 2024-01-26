@@ -1,12 +1,34 @@
 import BadRequestError from "@/error/BadRequestError";
 import NotFoundError from "@/error/NotFoundError";
+import UnprocessableEntityError from "@/error/UnprocessableEntityError";
 import ValidationError from "@/error/ValidationError";
+import { ApiErrorResponseType } from "@/types/api";
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 
 type RequestHandlerType = (
   req: MedusaRequest,
   res: MedusaResponse,
 ) => Promise<unknown>;
+
+const getErrorStatusCode = (error: Error): number => {
+  if (error instanceof UnprocessableEntityError) {
+    return 422;
+  }
+
+  if (error instanceof NotFoundError) {
+    return 404;
+  }
+
+  if (error instanceof BadRequestError) {
+    return 400;
+  }
+
+  if (error instanceof ValidationError) {
+    return 400;
+  }
+
+  return 500;
+};
 
 export const createRequestHandler = (handler: RequestHandlerType) => {
   return async (req: MedusaRequest, res: MedusaResponse) => {
@@ -16,30 +38,18 @@ export const createRequestHandler = (handler: RequestHandlerType) => {
     } catch (error) {
       console.error(error);
 
-      const response = {
+      const errorStatusCode = getErrorStatusCode(error);
+
+      const response: ApiErrorResponseType = {
         message: error.message,
         code: error.code,
       };
 
-      if (error instanceof NotFoundError) {
-        res.status(404).json(response);
-        return;
-      }
-
-      if (error instanceof BadRequestError) {
-        res.status(400).json(response);
-        return;
-      }
-
       if (error instanceof ValidationError) {
-        res.status(400).json({
-          ...response,
-          errors: error.payload,
-        });
-        return;
+        response.errors = error.payload;
       }
 
-      res.status(500).json(response);
+      res.status(errorStatusCode).json(response);
     }
   };
 };
