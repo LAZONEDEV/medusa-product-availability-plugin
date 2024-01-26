@@ -64,7 +64,7 @@ class AvailabilityService extends TransactionBaseService {
 
         await availabilityRepo.save(availability);
 
-        await this.availabilityProductService.create(
+        await this.availabilityProductService.createByEntityManager(
           data.availabilityProducts,
           availability.id,
           entityManager,
