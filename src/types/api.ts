@@ -5,3 +5,7 @@ export type ApiErrorResponseType = {
   code: string;
   errors?: FieldError[];
 };
+
+export type OperationResult = {
+  success: boolean;
+};
