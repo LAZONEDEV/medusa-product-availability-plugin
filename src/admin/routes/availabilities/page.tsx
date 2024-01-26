@@ -1,7 +1,8 @@
 import { AvailabilitiesList } from "../../components/availability/AvailabilitiesLists";
 import { RouteConfig } from "@medusajs/admin";
-import { Calendar, Plus } from "@medusajs/icons";
-import { Container, Heading, Button } from "@medusajs/ui";
+import { Calendar } from "@medusajs/icons";
+import { Container, Heading } from "@medusajs/ui";
+import AddNewAvailabilityBtn from "../../components/availability/AddNewButton";
 
 const CustomPage = () => {
   return (
@@ -13,9 +14,7 @@ const CustomPage = () => {
           <p className="max-w-3xl text-gray-500">Gérez vos disponibilités</p>
         </div>
 
-        <Button variant="secondary">
-          <Plus /> Ajouter
-        </Button>
+        <AddNewAvailabilityBtn>Ajouter</AddNewAvailabilityBtn>
       </div>
 
       <Container>
