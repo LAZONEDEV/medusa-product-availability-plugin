@@ -1,3 +1,5 @@
+import BadRequestHttpClientError from "../errors/BadRequestHttpClientError";
+
 class HTTPClient {
   private baseURL: string;
   private defaultOptions: RequestInit = {};
@@ -21,6 +23,13 @@ class HTTPClient {
         return;
       }
       const data = await response.json();
+
+      if (response.status === 400) {
+        throw new BadRequestHttpClientError(
+          data.message || "Bad request",
+          data.errors,
+        );
+      }
 
       if (!response.ok) {
         throw new Error(data.message || "Fetching failed");
