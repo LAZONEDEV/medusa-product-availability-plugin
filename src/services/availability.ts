@@ -8,6 +8,7 @@ import { GetAvailabilitiesResponseDto } from "@/types/availability";
 import BadRequestError from "@/error/BadRequestError";
 import { checkAvailabilityDuplicationError } from "@/utils/check-error";
 import { ValidationErrorMessage } from "@/constants/validation-error-message";
+import NotFoundError from "@/error/NotFoundError";
 
 class AvailabilityService extends TransactionBaseService {
   protected availabilityProductService: AvailabilityProductService;
@@ -83,6 +84,25 @@ class AvailabilityService extends TransactionBaseService {
         throw error;
       }
     });
+  }
+
+  async findOne(id: string) {
+    const availabilityRepo = this.activeManager_.getRepository(Availability);
+
+    const availability = await availabilityRepo.findOne({
+      where: { id },
+      relations: {
+        availabilityProducts: {
+          product: true,
+        },
+      },
+    });
+
+    if (!availability) {
+      throw new NotFoundError(ValidationErrorMessage.availabilityNotFound);
+    }
+
+    return availability;
   }
 }
 
