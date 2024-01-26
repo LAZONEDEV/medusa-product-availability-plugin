@@ -1,4 +1,5 @@
-import { Button } from "@medusajs/ui";
+import AddNewAvailabilityBtn from "./AddNewButton";
+
 const EmptyList = () => {
   return (
     <div className="flex flex-col items-center justify-center py-8">
@@ -6,7 +7,7 @@ const EmptyList = () => {
 
       <p className="text-gray-500">Commencez par créer vos disponibilités</p>
 
-      <Button className="mt-8">Créer une disponibilité</Button>
+      <AddNewAvailabilityBtn>Créer une disponibilité</AddNewAvailabilityBtn>
     </div>
   );
 };

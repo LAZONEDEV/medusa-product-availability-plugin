@@ -2,10 +2,13 @@ import { TransactionBaseService } from "@medusajs/medusa";
 import { Availability } from "@/models/availability";
 import { CreateAvailabilityDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import AvailabilityProductService from "./availability-product";
-import InternalServerError from "@/error/InternalServerError";
 import { GetAvailabilitiesDto } from "@/api/admin/availabilities/dtos/get-availabilities.dtos";
-import { FindOneOptions, MoreThan } from "typeorm";
+import { FindOneOptions, MoreThan, QueryFailedError } from "typeorm";
 import { GetAvailabilitiesResponseDto } from "@/types/availability";
+import BadRequestError from "@/error/BadRequestError";
+import { checkAvailabilityDuplicationError } from "@/utils/check-error";
+import { ValidationErrorMessage } from "@/constants/validation-error-message";
+import NotFoundError from "@/error/NotFoundError";
 
 class AvailabilityService extends TransactionBaseService {
   protected availabilityProductService: AvailabilityProductService;
@@ -64,13 +67,42 @@ class AvailabilityService extends TransactionBaseService {
         await this.availabilityProductService.create(
           data.availabilityProducts,
           availability.id,
+          entityManager,
         );
 
         return availability;
       } catch (error) {
-        throw new InternalServerError();
+        if (
+          error instanceof QueryFailedError &&
+          checkAvailabilityDuplicationError(error)
+        ) {
+          throw new BadRequestError(
+            ValidationErrorMessage.availabilityAlreadyExist,
+          );
+        }
+
+        throw error;
       }
     });
+  }
+
+  async findOne(id: string) {
+    const availabilityRepo = this.activeManager_.getRepository(Availability);
+
+    const availability = await availabilityRepo.findOne({
+      where: { id },
+      relations: {
+        availabilityProducts: {
+          product: true,
+        },
+      },
+    });
+
+    if (!availability) {
+      throw new NotFoundError(ValidationErrorMessage.availabilityNotFound);
+    }
+
+    return availability;
   }
 }
 
