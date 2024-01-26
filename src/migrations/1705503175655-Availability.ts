@@ -20,6 +20,12 @@ export class Availability1705503175655 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "availability_product" ADD CONSTRAINT "FK_f357cd3fd9d5a5d3cd275a2e1c2" FOREIGN KEY ("availabilityId") REFERENCES "availability"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
+    await queryRunner.query(
+      `ALTER TABLE "order" ADD "availabilityId" character varying`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "order" ADD CONSTRAINT "FK_1cb0ff62a0149b26c906b6dbad7" FOREIGN KEY ("availabilityId") REFERENCES "availability"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -37,6 +43,12 @@ export class Availability1705503175655 implements MigrationInterface {
       `ALTER TABLE "product" DROP CONSTRAINT "FK_49d419fc77d3aed46c835c558ac"`,
     );
 
+    await queryRunner.query(
+      `ALTER TABLE "order" DROP CONSTRAINT "FK_1cb0ff62a0149b26c906b6dbad7"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "order" ADD "availabilityId" character varying`,
+    );
     await queryRunner.query(`DROP TABLE "availability_product"`);
     await queryRunner.query(`DROP TABLE "availability"`);
     await queryRunner.query(`DROP TYPE "public"."availability_status_enum"`);
