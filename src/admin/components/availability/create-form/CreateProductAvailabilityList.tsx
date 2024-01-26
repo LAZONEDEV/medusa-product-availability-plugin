@@ -5,7 +5,7 @@ import type { ProductLike } from "@/admin/types";
 import { CreateAvailabilityProductItem } from "@/admin/types/api";
 import FieldLabel from "../../inputs/Label";
 import ProductsPicker from "./ProductPicker";
-import LoadingSkeleton from "./LoadingSkeleton";
+import ProductAvailabilityLoadingSkeleton from "./LoadingSkeleton";
 import { useEffect } from "react";
 
 interface CreateProductAvailabilityListProps {
@@ -47,7 +47,7 @@ const CreateProductAvailabilityList = ({
   };
 
   if (isLoading) {
-    return <LoadingSkeleton />;
+    return <ProductAvailabilityLoadingSkeleton />;
   }
 
   if (error) {
