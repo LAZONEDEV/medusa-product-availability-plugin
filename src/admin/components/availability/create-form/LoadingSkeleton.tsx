@@ -14,7 +14,7 @@ const Item = () => {
     </div>
   );
 };
-const LoadingSkeleton = () => {
+const ProductAvailabilityLoadingSkeleton = () => {
   return (
     <div role="status" className="space-y-2 mt-8 rounded animate-pulse">
       <Item />
@@ -25,4 +25,4 @@ const LoadingSkeleton = () => {
   );
 };
 
-export default LoadingSkeleton;
+export default ProductAvailabilityLoadingSkeleton;
