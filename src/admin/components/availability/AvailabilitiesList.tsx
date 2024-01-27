@@ -1,7 +1,7 @@
 import { Table, StatusBadge } from "@medusajs/ui";
 import AvailabilityProductsList from "./AvailabilityProductsList";
 import AvailabilitiesSkeleton from "./AvailabilitiesSkeleton";
-import { useGetAvailabilities } from "../../hooks/availabilities";
+import { useGetAvailabilities } from "../../hooks/availabilities/get-availabilities";
 import { AvailabilityStatus } from "../../types/api";
 import { Pencil } from "@medusajs/icons";
 import ErrorView from "./ErrorView";
