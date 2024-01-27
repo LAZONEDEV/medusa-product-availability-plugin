@@ -8,4 +8,6 @@ export const ValidationErrorMessage = {
   availabilityAlreadyExpired: "Availability already expired",
   newAvailableQuantityNotBeLessThanPlacedQuantity:
     "The available quantity you want to define must not be less than the order quantity already made.",
+  cantDeleteProductAvailabilityThatHaveOrder:
+    "You cannot delete a product availability already used to place orders",
 };
