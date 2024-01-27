@@ -1,5 +1,5 @@
 import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
-import { BaseEntity, generateEntityId } from "@medusajs/medusa";
+import { BaseEntity, Order, generateEntityId } from "@medusajs/medusa";
 import { AvailabilityStatus } from "../enums";
 import { AvailabilityProduct } from "./product-availability";
 
@@ -20,6 +20,9 @@ export class Availability extends BaseEntity {
     (availabilityProduct) => availabilityProduct.availability,
   )
   availabilityProducts: AvailabilityProduct[];
+
+  @OneToMany(() => Order, (order) => order.availability)
+  orders: Order[];
 
   @BeforeInsert()
   private beforeInsert(): void {

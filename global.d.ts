@@ -4,4 +4,8 @@ declare module "@medusajs/medusa" {
   interface Product {
     availabilities: AvailabilityProduct[];
   }
+
+  interface Order {
+    availability: Availability;
+  }
 }
