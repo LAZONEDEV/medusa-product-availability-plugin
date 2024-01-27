@@ -17,6 +17,18 @@ class AvailabilityApiService {
       throw error;
     }
   }
+
+  static async getById(id: string): Promise<Availability> {
+    try {
+      const availability = medusaHttpClient.get<Availability>(
+        `${AvailabilityApiService.path}/${id}`,
+      );
+
+      return availability;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default AvailabilityApiService;

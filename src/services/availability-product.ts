@@ -1,7 +1,12 @@
 import { Order, TransactionBaseService } from "@medusajs/medusa";
 import type { CreateAvailabilityProductDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import { AvailabilityProduct } from "@/models/product-availability";
-import { EntityManager, QueryFailedError } from "typeorm";
+import {
+  EntityManager,
+  FindOptionsRelationByString,
+  FindOptionsRelations,
+  QueryFailedError,
+} from "typeorm";
 import { checkProductAvailabilityDuplicationError } from "@/utils/check-error";
 import BadRequestError from "@/error/BadRequestError";
 import { ValidationErrorMessage } from "@/constants/validation-error-message";
@@ -9,9 +14,11 @@ import UpdateProductAvailabilityDto from "@/api/admin/product-availabilities/dto
 import NotFoundError from "@/error/NotFoundError";
 import AvailabilityProductRepository from "@/repositories/product-availability";
 import UnprocessableEntityError from "@/error/UnprocessableEntityError";
+import { CreateProductsAvailabilitiesDto } from "@/api/admin/product-availabilities/dtos/create-product-availabilities.dtos";
+import { OperationResult } from "@/types/api";
 
 class AvailabilityProductService extends TransactionBaseService {
-  async create(
+  async createByEntityManager(
     items: CreateAvailabilityProductDto[],
     availabilityId: string,
     entityManager: EntityManager,
@@ -46,7 +53,43 @@ class AvailabilityProductService extends TransactionBaseService {
     }
   }
 
-  async update(id: string, data: UpdateProductAvailabilityDto) {
+  async create(data: CreateProductsAvailabilitiesDto) {
+    return this.atomicPhase_((entityManager) => {
+      return this.createByEntityManager(
+        data.availabilityProducts,
+        data.availabilityId,
+        entityManager,
+      );
+    });
+  }
+
+  async delete(id: string): Promise<OperationResult> {
+    const availabilityProdRepo = this.activeManager_.withRepository(
+      AvailabilityProductRepository,
+    );
+
+    const orderRepository = this.activeManager_.getRepository(Order);
+
+    const passedCommand = await availabilityProdRepo.getPlacedOrderQuantity(
+      id,
+      orderRepository,
+    );
+
+    if (passedCommand > 0) {
+      throw new UnprocessableEntityError(
+        ValidationErrorMessage.cantDeleteProductAvailabilityThatHaveOrder,
+      );
+    }
+
+    const deletionResult = await availabilityProdRepo.delete({ id });
+
+    return deletionResult.affected > 0 ? { success: true } : { success: false };
+  }
+
+  async update(
+    id: string,
+    data: UpdateProductAvailabilityDto,
+  ): Promise<OperationResult> {
     const availabilityProdRepo = this.activeManager_.withRepository(
       AvailabilityProductRepository,
     );
