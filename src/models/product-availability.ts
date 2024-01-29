@@ -8,7 +8,7 @@ import { Availability } from "./availability";
 @Unique("availability_product_unique_constraint", ["product", "availability"])
 export class AvailabilityProduct extends BaseEntity {
   @Column("smallint", { nullable: true })
-  quantity: number;
+  quantity: number | null;
 
   @ManyToOne(() => Product, (product) => product.availabilities)
   product: Product;
