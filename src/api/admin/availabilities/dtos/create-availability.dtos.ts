@@ -6,6 +6,7 @@ import {
   Max,
   ArrayNotEmpty,
   IsNumber,
+  IsOptional,
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
@@ -41,6 +42,7 @@ export class CreateAvailabilityProductDto {
   productId: string;
 
   @IsNumber()
+  @IsOptional()
   @Min(minAvailableQuantity)
   @Max(arbitrarySmallIntMax)
   quantity: number;
