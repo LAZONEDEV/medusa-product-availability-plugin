@@ -7,9 +7,12 @@ import BadRequestHttpClientError from "../../errors/BadRequestHttpClientError";
 import { fieldErrorsToFormikErrors } from "../../utils/fieldErrorToFormikError";
 import AvailabilityApiService from "../../services/AvailabilityApiService";
 import adminRoutes from "../../constants/adminRoutes";
+import { useQueryClient } from "@tanstack/react-query";
+import apiRequestKey from "../../constants/apiRequestKey";
 
 export const useCreateAvailabilityMutation = () => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const handleSubmit = async (
@@ -25,6 +28,10 @@ export const useCreateAvailabilityMutation = () => {
         variant: "success",
       });
 
+      // force refresh availabilities list
+      queryClient.invalidateQueries({
+        queryKey: apiRequestKey.availabilities,
+      });
       navigate(adminRoutes.availabilities);
     } catch (error) {
       toast({
