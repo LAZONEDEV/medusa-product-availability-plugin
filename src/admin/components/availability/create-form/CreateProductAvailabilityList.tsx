@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useField } from "formik";
+import { Text } from "@medusajs/ui";
 import { useAdminProducts } from "medusa-react";
 import ProductAvailabilityItemField from "./ProductAvailabilityItemField";
 import type { ProductLike } from "@/admin/types";
@@ -6,7 +8,6 @@ import { CreateAvailabilityProductItem } from "@/admin/types/api";
 import FieldLabel from "../../inputs/Label";
 import ProductsPicker from "./ProductPicker";
 import ProductAvailabilityLoadingSkeleton from "./LoadingSkeleton";
-import { useEffect } from "react";
 
 interface CreateProductAvailabilityListProps {
   selectAllProductAtInitial: boolean;
@@ -62,11 +63,12 @@ const CreateProductAvailabilityList = ({
     return <p>Erreur de chargement</p>;
   }
 
-  const hasUnselectedProduct = products?.length > selectedProducts.length;
   const allProductsToExcludeInPicker = [
     ...selectedProducts,
     ...productsToExcludeInPicker,
   ];
+  const hasUnselectedProduct =
+    products?.length > allProductsToExcludeInPicker.length;
 
   return (
     <>
@@ -100,7 +102,11 @@ const CreateProductAvailabilityList = ({
           alreadySelectedProducts={allProductsToExcludeInPicker}
           onProductsSelected={handleSelectedProductsChange}
         />
-      ) : null}
+      ) : (
+        <Text className="bg-blue-10 text-blue-900 text-center rounded-lg p-4">
+          Tous les produits sont déjà ajouté à cette disponibilité
+        </Text>
+      )}
     </>
   );
 };
