@@ -16,7 +16,7 @@ const AvailabilityDetailsProductsList = ({
 
   return (
     <Container className="max-w-2xl">
-      <Heading level="h2" className="mb-10">
+      <Heading level="h2" className="mb-6">
         Les diponibilités des produits
       </Heading>
 
