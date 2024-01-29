@@ -9,7 +9,9 @@ import ProductAvailabilityLoadingSkeleton from "./LoadingSkeleton";
 import { useEffect } from "react";
 
 interface CreateProductAvailabilityListProps {
+  selectAllProductAtInitial: boolean;
   selectedProducts: ProductLike[];
+  productsToExcludeInPicker?: ProductLike[];
   onRemoveItem: (productId: string) => void;
   onSelectedProductsChange: (products: ProductLike[]) => void;
 }
@@ -18,6 +20,8 @@ const CreateProductAvailabilityList = ({
   onRemoveItem,
   selectedProducts,
   onSelectedProductsChange,
+  selectAllProductAtInitial,
+  productsToExcludeInPicker = [],
 }: CreateProductAvailabilityListProps) => {
   const { error, isLoading, products } = useAdminProducts();
   const [{ value }, , { setValue }] = useField<CreateAvailabilityProductItem[]>(
@@ -25,7 +29,11 @@ const CreateProductAvailabilityList = ({
   );
   useEffect(() => {
     // selected all product when products are loaded
-    if (selectedProducts.length === 0 && products) {
+    if (
+      selectedProducts.length === 0 &&
+      products &&
+      selectAllProductAtInitial
+    ) {
       handleSelectedProductsChange(products);
     }
   }, [products]);
@@ -55,6 +63,10 @@ const CreateProductAvailabilityList = ({
   }
 
   const hasUnselectedProduct = products?.length > selectedProducts.length;
+  const allProductsToExcludeInPicker = [
+    ...selectedProducts,
+    ...productsToExcludeInPicker,
+  ];
 
   return (
     <>
@@ -85,7 +97,7 @@ const CreateProductAvailabilityList = ({
       {hasUnselectedProduct ? (
         <ProductsPicker
           products={products}
-          alreadySelectedProducts={selectedProducts}
+          alreadySelectedProducts={allProductsToExcludeInPicker}
           onProductsSelected={handleSelectedProductsChange}
         />
       ) : null}
