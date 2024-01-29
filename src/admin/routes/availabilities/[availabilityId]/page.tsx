@@ -19,7 +19,7 @@ const Page = () => {
   }
 
   return (
-    <section>
+    <section className="pb-8">
       <Toaster />
 
       <AvailabilityDetailTitle date={data.date} />
