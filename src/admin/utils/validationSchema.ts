@@ -10,11 +10,17 @@ const productAvailabilitySchema = object({
   quantity: quantityValidator,
 });
 
+const availabilityProductsValidator = array()
+  .of(productAvailabilitySchema)
+  .min(1, validationMessage.noEmptyAvailabilityProds);
+
 export const createAvailabilitySchema = object({
   date: date().required(validationMessage.requiredField),
-  availabilityProducts: array()
-    .of(productAvailabilitySchema)
-    .min(1, validationMessage.noEmptyAvailabilityProds),
+  availabilityProducts: availabilityProductsValidator,
+});
+
+export const createAvailabilitiesSchema = object({
+  availabilityProducts: availabilityProductsValidator,
 });
 
 export const updateProductAvailabilitySchema = object({
