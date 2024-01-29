@@ -1,3 +1,4 @@
+import { APIResponse } from "@/types/api";
 import medusaApiRoutes from "../constants/apiRoutes";
 import { Availability, CreateAvailabilityDto } from "../types/api";
 import medusaHttpClient from "../utils/medusaHttpClient";
@@ -20,11 +21,11 @@ class AvailabilityApiService {
 
   static async getById(id: string): Promise<Availability> {
     try {
-      const availability = medusaHttpClient.get<Availability>(
-        `${AvailabilityApiService.path}/${id}`,
-      );
+      const availability = await medusaHttpClient.get<
+        APIResponse<Availability>
+      >(`${AvailabilityApiService.path}/${id}`);
 
-      return availability;
+      return availability.data;
     } catch (error) {
       throw error;
     }

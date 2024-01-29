@@ -9,3 +9,7 @@ export type ApiErrorResponseType = {
 export type OperationResult = {
   success: boolean;
 };
+
+export type APIResponse<T> = {
+  data: T;
+};
