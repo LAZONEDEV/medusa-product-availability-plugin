@@ -7,7 +7,7 @@ import {
   Checkbox,
   Label,
 } from "@medusajs/ui";
-import { useId } from "react";
+import { ReactNode, useId } from "react";
 
 interface ProductAvailabilityItemProps {
   image: string;
@@ -15,6 +15,8 @@ interface ProductAvailabilityItemProps {
   quantity: number | null;
   onQuantityChange: (quantity: number | null) => void;
   onRemove: () => void;
+  children?: ReactNode;
+  isRemoving?: boolean;
 }
 
 const ProductAvailabilityItem = ({
@@ -23,6 +25,8 @@ const ProductAvailabilityItem = ({
   quantity,
   title,
   onRemove,
+  children,
+  isRemoving,
 }: ProductAvailabilityItemProps) => {
   const unlimitedFieldID = useId();
   const allowUnlimited = quantity === null;
@@ -43,11 +47,16 @@ const ProductAvailabilityItem = ({
         className="w-[70px] min-h-full rounded-tl-lg rounded-bl-lg object-cover"
       />
 
-      <div className="m-3 flex flex-1 flex-col justify-between">
-        <div className="flex w-full mb-2 justify-between items-center">
+      <div className="flex flex-col justify-between flex-1 m-3">
+        <div className="flex items-center justify-between w-full mb-2">
           <Heading level="h3">{title}</Heading>
 
-          <IconButton title="Retirer le produit" onClick={() => onRemove()}>
+          <IconButton
+            type="button"
+            title="Retirer le produit"
+            isLoading={isRemoving}
+            onClick={onRemove}
+          >
             <Trash />
           </IconButton>
         </div>
@@ -58,7 +67,7 @@ const ProductAvailabilityItem = ({
           </Text>
 
           <div className="flex">
-            <div className="flex items-center space-x-2 mr-2">
+            <div className="flex items-center mr-2 space-x-2">
               <Label htmlFor={unlimitedFieldID} className="text-small">
                 Quantité illimitée
               </Label>
@@ -79,6 +88,8 @@ const ProductAvailabilityItem = ({
               onChange={(e) => onQuantityChange(Number(e.target.value))}
             />
           </div>
+
+          {children}
         </div>
       </div>
     </div>
