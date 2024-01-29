@@ -1,9 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@medusajs/ui";
 import ProductAvailabilityApiService from "../../services/ProductAvailabilityApiService";
+import apiRequestKey from "../../constants/apiRequestKey";
 
-const useDeleteProductAvailability = (id: string) => {
+const useDeleteProductAvailability = (id: string, availabilityId) => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const deleteProductAvailability = async () => {
     return ProductAvailabilityApiService.delete(id);
@@ -22,6 +24,12 @@ const useDeleteProductAvailability = (id: string) => {
           description: "La disponibilité du produit est supprimée avec succès",
           variant: "success",
         });
+
+        // force availability to refresh
+        queryClient.invalidateQueries({
+          queryKey: [...apiRequestKey.availabilities, availabilityId],
+        });
+
         return;
       }
 

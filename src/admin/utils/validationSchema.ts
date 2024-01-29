@@ -1,9 +1,13 @@
 import { object, string, number, date, array } from "yup";
 import { validationMessage } from "../messages/all";
 
+const quantityValidator = number()
+  .min(1, validationMessage.invalidQuantity)
+  .nullable();
+
 const productAvailabilitySchema = object({
   productId: string().required(validationMessage.requiredField),
-  quantity: number().min(1, validationMessage.invalidQuantity).nullable(),
+  quantity: quantityValidator,
 });
 
 export const createAvailabilitySchema = object({
@@ -11,4 +15,8 @@ export const createAvailabilitySchema = object({
   availabilityProducts: array()
     .of(productAvailabilitySchema)
     .min(1, validationMessage.noEmptyAvailabilityProds),
+});
+
+export const updateProductAvailabilitySchema = object({
+  quantity: quantityValidator,
 });
