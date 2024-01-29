@@ -11,7 +11,7 @@ export const useGetAvailability = () => {
     return AvailabilityApiService.getById(availabilityId);
   };
 
-  const queryKey = [...apiRequestKey.availabilities, fetchAvailability];
+  const queryKey = [...apiRequestKey.availabilities, availabilityId];
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey,
@@ -23,5 +23,6 @@ export const useGetAvailability = () => {
     data,
     refetch,
     error,
+    availabilityId,
   };
 };
