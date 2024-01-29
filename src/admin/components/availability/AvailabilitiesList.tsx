@@ -7,6 +7,7 @@ import { Pencil } from "@medusajs/icons";
 import ErrorView from "./ErrorView";
 import { Link } from "react-router-dom";
 import EmptyList from "./EmptyList";
+import { toLocaleDate } from "../../utils/date";
 
 export function AvailabilitiesList() {
   const {
@@ -48,10 +49,7 @@ export function AvailabilitiesList() {
 
       <Table.Body>
         {availabilities.map((order) => {
-          const formattedDate = new Date(order.date).toLocaleDateString(
-            undefined,
-            { month: "long", day: "2-digit", year: "numeric" },
-          );
+          const formattedDate = toLocaleDate(order.date);
 
           return (
             <Table.Row
