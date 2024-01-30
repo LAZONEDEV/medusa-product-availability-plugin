@@ -23,10 +23,6 @@ const EditableAvailabilityDetailProduct = ({
   );
   const { handleUpdate } = useUpdateProductAvailability(id, availabilityId);
 
-  const openDeletionConfirmModal = () => {
-    setDeleteModalOpened(true);
-  };
-
   return (
     <>
       <DeleteProductAvailabilityPrompt
@@ -51,7 +47,7 @@ const EditableAvailabilityDetailProduct = ({
                 isSubmitting={isSubmitting}
                 isRemoving={isDeleting}
                 key={product.id}
-                onRemove={openDeletionConfirmModal}
+                onRemove={() => setDeleteModalOpened(true)}
               />
             </Form>
           );

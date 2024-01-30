@@ -1,6 +1,7 @@
 import type { AvailabilityProduct } from "@/admin/types/api";
-import { Container, Heading, Text } from "@medusajs/ui";
-import EditableAvailabilityDetailProduct from "./EditableAvailabilityDetailProduct";
+import { Container, Heading } from "@medusajs/ui";
+import EmptyProductAvailabilities from "./EmptyProductAvailabilities";
+import ProductAvailabilities from "./ProductAvailabilities";
 
 interface AvailabilityDetailsProductsListProps {
   productAvailabilities: AvailabilityProduct[];
@@ -19,19 +20,14 @@ const AvailabilityDetailsProductsList = ({
         Les diponibilités des produits
       </Heading>
 
-      {productAvailabilities.map((productAvailability) => (
-        <EditableAvailabilityDetailProduct
-          availabilityId={availabilityId}
-          key={productAvailability.id}
-          productAvailability={productAvailability}
-        />
-      ))}
-
       {isEmpty ? (
-        <Text className="text-center">
-          Aucune disponibilité de produit définie
-        </Text>
-      ) : null}
+        <EmptyProductAvailabilities />
+      ) : (
+        <ProductAvailabilities
+          availabilityId={availabilityId}
+          productAvailabilities={productAvailabilities}
+        />
+      )}
     </Container>
   );
 };
