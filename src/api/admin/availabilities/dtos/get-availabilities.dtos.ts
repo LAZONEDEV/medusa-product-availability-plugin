@@ -1,23 +1,11 @@
-import { IsBoolean, IsNumber, IsOptional } from "class-validator";
+import { IsBoolean, IsOptional } from "class-validator";
 import { Transform } from "class-transformer";
-import {
-  toJSONTransformer,
-  toNumberTransformer,
-} from "@/utils/validator/tranformers";
+import { toJSONTransformer } from "@/utils/validator/tranformers";
+import { QueryPaginationDto } from "@/utils/dtos/QueryPaginationDto";
 
-export class GetAvailabilitiesDto {
+export class GetAvailabilitiesDto extends QueryPaginationDto {
   @Transform(toJSONTransformer)
   @IsOptional()
   @IsBoolean()
   includeExpired?: boolean;
-
-  @Transform(toNumberTransformer)
-  @IsNumber()
-  @IsOptional()
-  page?: number;
-
-  @Transform(toNumberTransformer)
-  @IsNumber()
-  @IsOptional()
-  limit?: number;
 }
