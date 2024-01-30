@@ -53,6 +53,27 @@ class AvailabilityProductService extends TransactionBaseService {
     }
   }
 
+  async getAvailabilityProducts(availabilityId: string) {
+    try {
+      const availabilityProdRepo = this.activeManager_.withRepository(
+        AvailabilityProductRepository,
+      );
+
+      return availabilityProdRepo.find({
+        relations: {
+          product: true,
+        },
+        where: {
+          availability: {
+            id: availabilityId,
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(data: CreateProductsAvailabilitiesDto) {
     return this.atomicPhase_((entityManager) => {
       return this.createByEntityManager(
