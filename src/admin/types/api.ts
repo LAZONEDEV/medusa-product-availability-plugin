@@ -63,3 +63,11 @@ export interface CreateAvailabilityDto {
   date: Date;
   availabilityProducts: CreateAvailabilityProductItem[];
 }
+
+export interface UpdateProductAvailabilitiesDto {
+  availabilityProducts: CreateAvailabilityProductItem[];
+}
+
+export interface UpdateAvailabilityProductItem {
+  quantity: number;
+}
