@@ -1,24 +1,20 @@
 import { MedusaRequest } from "@medusajs/medusa";
 import type AvailabilityService from "@/services/availability";
 import { createRequestHandler } from "@/utils/request-handler";
-import { GetAvailabilitiesDto } from "../dtos/get-availabilities.dtos";
 import { validator } from "@/utils/validator/validator";
+import { GetStoreAvailabilitiesDto } from "../dtos/get-store-availabilities.dtos";
 
-export const getAvailabilities = createRequestHandler(
+export const getStoreAvailabilities = createRequestHandler(
   async (req: MedusaRequest) => {
     try {
-      const queries = await validator(GetAvailabilitiesDto, req.query);
+      const queries = await validator(GetStoreAvailabilitiesDto, req.query);
 
       const availabilityService = req.scope.resolve<AvailabilityService>(
         "availabilityService",
       );
 
       const availabilities =
-        await availabilityService.getAvailabilitiesForAdmin(queries, {
-          availabilityProducts: {
-            product: true,
-          },
-        });
+        await availabilityService.getAvailabilitiesForStore(queries);
 
       return availabilities;
     } catch (error) {
