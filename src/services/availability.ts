@@ -45,7 +45,7 @@ class AvailabilityService extends TransactionBaseService {
       where: whereClose,
       skip: skipOffset,
       take: queryLimit,
-      order: { created_at: "DESC" },
+      order: { date: "ASC" },
       relations: {
         availabilityProducts: {
           product: true,
