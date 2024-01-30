@@ -1,5 +1,5 @@
 import { Container } from "@medusajs/ui";
-import ProductAvailabilityLoadingSkeleton from "../create-form/LoadingSkeleton";
+import ProductAvailabilityLoadingSkeleton from "../utils/ProductAvailabilityLoadingSkeleton";
 
 const AvailabilityLoadingVue = () => {
   return (

@@ -3,7 +3,7 @@ import { Button } from "@medusajs/ui";
 import { ReactNode, useState } from "react";
 import type { ProductLike } from "@/admin/types";
 import { AnySchema } from "yup";
-import CreateProductAvailabilityList from "../create-form/CreateProductAvailabilityList";
+import CreateProductAvailabilityList from "../utils/CreateProductAvailabilityList";
 
 interface CreateProductAvailabilitiesDumbFormProps<T> {
   initialValues: T;
