@@ -1,5 +1,5 @@
 import { Button } from "@medusajs/ui";
-import ProductAvailabilityItem from "../create-form/ProductAvailabilityItem";
+import ProductAvailabilityItem from "../utils/ProductAvailabilityItem";
 import { useField } from "formik";
 import FieldErrorMessage from "../../inputs/ErrorMessage";
 

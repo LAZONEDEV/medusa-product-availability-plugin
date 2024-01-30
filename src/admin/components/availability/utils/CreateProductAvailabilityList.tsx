@@ -7,7 +7,7 @@ import type { ProductLike } from "@/admin/types";
 import { CreateAvailabilityProductItem } from "@/admin/types/api";
 import FieldLabel from "../../inputs/Label";
 import ProductsPicker from "./ProductPicker";
-import ProductAvailabilityLoadingSkeleton from "./LoadingSkeleton";
+import ProductAvailabilityLoadingSkeleton from "./ProductAvailabilityLoadingSkeleton";
 
 interface CreateProductAvailabilityListProps {
   selectAllProductAtInitial: boolean;
