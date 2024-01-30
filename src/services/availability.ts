@@ -3,57 +3,100 @@ import { Availability } from "@/models/availability";
 import { CreateAvailabilityDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import AvailabilityProductService from "./availability-product";
 import { GetAvailabilitiesDto } from "@/api/admin/availabilities/dtos/get-availabilities.dtos";
-import { FindOneOptions, MoreThan, QueryFailedError } from "typeorm";
+import {
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsRelations,
+  MoreThan,
+  QueryFailedError,
+} from "typeorm";
 import { GetAvailabilitiesResponseDto } from "@/types/availability";
 import BadRequestError from "@/error/BadRequestError";
 import { checkAvailabilityDuplicationError } from "@/utils/check-error";
 import { ValidationErrorMessage } from "@/constants/validation-error-message";
 import NotFoundError from "@/error/NotFoundError";
+import { QueryPaginationDto } from "@/utils/dtos/QueryPaginationDto";
+import { GetStoreAvailabilitiesDto } from "@/api/store/availabilities/dtos/get-store-availabilities.dtos";
+
+type InjectedDependencies = {
+  availabilityProductService: AvailabilityProductService;
+};
 
 class AvailabilityService extends TransactionBaseService {
   protected availabilityProductService: AvailabilityProductService;
 
-  constructor(config) {
+  constructor(config: InjectedDependencies) {
     super(config);
     this.availabilityProductService = config.availabilityProductService;
   }
 
-  async get(
-    query: GetAvailabilitiesDto,
-  ): Promise<GetAvailabilitiesResponseDto> {
-    const availabilityRepo = this.activeManager_.getRepository(Availability);
+  private computeOffsetAndPage = (limit = 10, page = 0) => {
+    const skipOffset = Math.max(page * limit, 0);
 
+    return [limit, skipOffset] as const;
+  };
+
+  private async getWhere(
+    query: QueryPaginationDto,
+    findOptions: Pick<
+      FindManyOptions<Availability>,
+      "where" | "relations"
+    > = {},
+  ) {
+    try {
+      const availabilityRepo = this.activeManager_.getRepository(Availability);
+
+      const [queryLimit, skipOffset] = this.computeOffsetAndPage(
+        query.limit,
+        query.page,
+      );
+
+      const [availabilities, totalCount] = await availabilityRepo.findAndCount({
+        skip: skipOffset,
+        take: queryLimit,
+        order: { date: "ASC" },
+        ...findOptions,
+      });
+
+      return { availabilities, totalCount };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  getAvailabilitiesForAdmin(
+    query: GetAvailabilitiesDto,
+    relations?: FindOptionsRelations<Availability>,
+  ): Promise<GetAvailabilitiesResponseDto> {
     const whereClose: FindOneOptions<Availability>["where"] = {};
-    const defaultQuery: GetAvailabilitiesDto = {
-      includeExpired: false,
-      limit: 10,
-      page: 0,
-    };
 
     // expired availabilities are those whose dates have passed.
     if (!query.includeExpired) {
       whereClose.date = MoreThan(new Date());
     }
 
-    const queryLimit = query.limit || defaultQuery.limit;
-
-    const skipOffset = query.page
-      ? Math.max(query.page * queryLimit, 0)
-      : defaultQuery.page;
-
-    const [availabilities, totalCount] = await availabilityRepo.findAndCount({
+    return this.getWhere(query, {
+      relations,
       where: whereClose,
-      skip: skipOffset,
-      take: queryLimit,
-      order: { date: "ASC" },
-      relations: {
-        availabilityProducts: {
-          product: true,
-        },
-      },
     });
+  }
 
-    return { availabilities, totalCount };
+  getAvailabilitiesForStore(
+    query: GetStoreAvailabilitiesDto,
+  ): Promise<GetAvailabilitiesResponseDto> {
+    const whereClose: FindOneOptions<Availability>["where"] = {
+      date: MoreThan(new Date()),
+    };
+
+    if (query.forProduct) {
+      whereClose.availabilityProducts = {
+        product: {
+          id: query.forProduct,
+        },
+      };
+    }
+
+    return this.getWhere(query, { where: whereClose });
   }
 
   async create(data: CreateAvailabilityDto) {
