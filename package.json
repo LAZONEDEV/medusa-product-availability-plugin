@@ -13,9 +13,10 @@
   ],
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/rimraf dist",
-    "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
-    "build:server": "cross-env npm run clean && tsc -p tsconfig.json",
+    "build": "cross-env npm run clean && npm run build:server && npm run build:admin:bundle",
+    "build:server": "cross-env npm run clean && tsc -p tsconfig.json && tsc-alias",
     "build:admin": "cross-env medusa-admin build",
+    "build:admin:bundle": "cross-env medusa-admin bundle",
     "watch": "cross-env tsc --watch",
     "test": "cross-env jest",
     "seed": "cross-env medusa seed -f ./data/seed.json",
