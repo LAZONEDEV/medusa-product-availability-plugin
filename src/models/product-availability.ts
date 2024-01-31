@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, Entity, ManyToOne, Unique } from "typeorm";
-import { BaseEntity, Product, generateEntityId } from "@medusajs/medusa";
+import { BaseEntity, generateEntityId } from "@medusajs/medusa";
 import { Availability } from "./availability";
+import { Product } from "./product";
 
 @Entity()
 // use composite key to avoid multiple having multiple availability for
