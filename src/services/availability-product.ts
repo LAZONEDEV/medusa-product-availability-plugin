@@ -1,12 +1,7 @@
 import { Order, TransactionBaseService } from "@medusajs/medusa";
 import type { CreateAvailabilityProductDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import { AvailabilityProduct } from "@/models/product-availability";
-import {
-  EntityManager,
-  FindOptionsRelationByString,
-  FindOptionsRelations,
-  QueryFailedError,
-} from "typeorm";
+import { EntityManager, QueryFailedError } from "typeorm";
 import { checkProductAvailabilityDuplicationError } from "@/utils/check-error";
 import BadRequestError from "@/error/BadRequestError";
 import { ValidationErrorMessage } from "@/constants/validation-error-message";
