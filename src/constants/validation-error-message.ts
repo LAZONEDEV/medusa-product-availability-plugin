@@ -10,4 +10,16 @@ export const ValidationErrorMessage = {
     "The available quantity you want to define must not be less than the order quantity already made.",
   cantDeleteProductAvailabilityThatHaveOrder:
     "You cannot delete a product availability already used to place orders",
+  availabilityNotSetOnCart: "No availability has been defined on the cart.",
+  productNotAvailableOnTheAvailability: (productTitle: string) =>
+    `The product ${productTitle} is not available on the availability set on the cart`,
+  availableQuantityExceededError: (
+    productTitle: string,
+    availableQuantity: number,
+  ) =>
+    `The available quantity for the product ${productTitle} is ${availableQuantity}`,
+  productNoLongerAvailableOnAvailability: (productTitle: string) =>
+    `The product ${productTitle} is no longer available on the availability set on the cart`,
+  cartAvailabilityIsInactive: "The availability set on the cart is inactive",
+  cartAvailabilityExpired: "The availability set on the cart has expired",
 };
