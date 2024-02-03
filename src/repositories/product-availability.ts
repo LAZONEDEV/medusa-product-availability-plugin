@@ -10,7 +10,6 @@ export const AvailabilityProductRepository = dataSource
       productAvailabilityId: string,
       orderRepo: Repository<Order>,
     ): Promise<number> {
-      // to ensure consistency of order quantities, cancelled orders will not be excluded
       const result = await orderRepo
         .createQueryBuilder("order")
         .innerJoin("order.availability", "availability")
@@ -22,6 +21,7 @@ export const AvailabilityProductRepository = dataSource
           productAvailabilityId,
         })
         .andWhere("product.id = availability_product.product.id")
+        .andWhere(`order.status != :canceled`, { canceled: "canceled" })
         .select("SUM(line_item.quantity)", "totalOrderedQuantity")
         .getRawOne();
 
