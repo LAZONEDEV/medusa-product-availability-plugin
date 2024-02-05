@@ -1,3 +1,7 @@
+import {
+  CartValidationErrorCode,
+  cartCompletionErrorsInfo,
+} from "@/constants/cart-validation-error-messages";
 import { ValidationErrorMessage } from "@/constants/validation-error-message";
 import { AvailabilityStatus } from "@/enums";
 import CartValidationError from "@/error/CartValidationFailure";
@@ -33,7 +37,7 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
 
       if (!cart.availability) {
         throw new CartValidationError(
-          ValidationErrorMessage.availabilityNotSetOnCart,
+          cartCompletionErrorsInfo.AVAILABILITY_NOT_SET_ON_CART,
         );
       }
 
@@ -41,14 +45,14 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
 
       if (availability.status === AvailabilityStatus.Inactive) {
         throw new CartValidationError(
-          ValidationErrorMessage.cartAvailabilityIsInactive,
+          cartCompletionErrorsInfo.AVAILABILITY_INACTIVE,
         );
       }
 
       // checking expiration
       if (new Date(availability.date) < new Date()) {
         throw new CartValidationError(
-          ValidationErrorMessage.cartAvailabilityExpired,
+          cartCompletionErrorsInfo.AVAILABILITY_EXPIRED,
         );
       }
 
@@ -61,10 +65,17 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
         );
 
         if (!productAvailability) {
-          throw new CartValidationError(
+          const errorMessage =
             ValidationErrorMessage.productNotAvailableOnTheAvailability(
               product.title,
-            ),
+            );
+
+          throw new CartValidationError(
+            {
+              code: CartValidationErrorCode.PRODUCT_NOT_AVAILABLE_ON_AVAILABILITY,
+              message: errorMessage,
+            },
+            { productTitle: product.title },
           );
         }
 
@@ -81,19 +92,34 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
         const availableQuantity = productAvailability.quantity - placedOrder;
 
         if (availableQuantity === 0) {
-          throw new CartValidationError(
+          const errorMessage =
             ValidationErrorMessage.productNoLongerAvailableOnAvailability(
               product.title,
-            ),
+            );
+          throw new CartValidationError(
+            {
+              code: CartValidationErrorCode.PRODUCT_NO_LONGER_AVAILABLE_ON_AVAILABILITY,
+              message: errorMessage,
+            },
+            { productTitle: product.title },
           );
         }
 
         if (availableQuantity < item.quantity) {
-          throw new CartValidationError(
+          const errorMessage =
             ValidationErrorMessage.availableQuantityExceededError(
               product.title,
               availableQuantity,
-            ),
+            );
+
+          throw new CartValidationError(
+            {
+              code: CartValidationErrorCode.AVAILABILITY_EXPIRED,
+              message: errorMessage,
+            },
+            {
+              availableQuantity,
+            },
           );
         }
       }
@@ -124,7 +150,11 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
     } catch (error) {
       if (error instanceof CartValidationError) {
         return {
-          response_body: { message: error.message },
+          response_body: {
+            message: error.message,
+            code: error.code,
+            payload: error.payload,
+          },
           response_code: 422,
         };
       }
