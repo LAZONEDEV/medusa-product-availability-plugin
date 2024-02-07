@@ -70,6 +70,11 @@ const CreateProductAvailabilityList = ({
   const hasUnselectedProduct =
     products?.length > allProductsToExcludeInPicker.length;
 
+  const noSelectionAvailableMessage =
+    products.length === 0
+      ? "Vous n'avez aucun produit dans votre boutique actuellement"
+      : "Tous les produits sont déjà ajoutés à cette disponibilité";
+
   return (
     <>
       <div className="mt-4">
@@ -103,8 +108,8 @@ const CreateProductAvailabilityList = ({
           onProductsSelected={handleSelectedProductsChange}
         />
       ) : (
-        <Text className="bg-blue-10 text-blue-900 text-center rounded-lg p-4">
-          Tous les produits sont déjà ajouté à cette disponibilité
+        <Text className="bg-yellow-10 my-4 text-yellow-900 text-center rounded-lg p-4">
+          {noSelectionAvailableMessage}
         </Text>
       )}
     </>
