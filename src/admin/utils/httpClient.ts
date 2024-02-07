@@ -18,7 +18,10 @@ class HTTPClient {
       ...options,
     };
     try {
-      const response = await fetch(`${this.baseURL}/${url}`, allOptions);
+      const response = await fetch(
+        `${this.baseURL}${this.baseURL.endsWith("/") ? "" : "/"}${url}`,
+        allOptions,
+      );
       if (response.status === 204) {
         return;
       }
