@@ -1,4 +1,5 @@
 import BadRequestHttpClientError from "../errors/BadRequestHttpClientError";
+import { computeURL } from "./computeURL";
 
 class HTTPClient {
   private baseURL: string;
@@ -17,11 +18,10 @@ class HTTPClient {
       ...this.defaultOptions,
       ...options,
     };
+
     try {
-      const response = await fetch(
-        `${this.baseURL}${this.baseURL.endsWith("/") ? "" : "/"}${url}`,
-        allOptions,
-      );
+      const fullURL = computeURL(this.baseURL, url);
+      const response = await fetch(fullURL, allOptions);
       if (response.status === 204) {
         return;
       }
