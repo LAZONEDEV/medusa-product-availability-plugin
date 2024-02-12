@@ -56,7 +56,11 @@ class AvailabilityProductService extends TransactionBaseService {
 
       return availabilityProdRepo.find({
         relations: {
-          product: true,
+          product: {
+            variants: {
+              prices: true,
+            },
+          },
         },
         where: {
           availability: {
