@@ -10,7 +10,10 @@ import NotFoundError from "@/error/NotFoundError";
 import AvailabilityProductRepository from "@/repositories/product-availability";
 import UnprocessableEntityError from "@/error/UnprocessableEntityError";
 import { CreateProductsAvailabilitiesDto } from "@/api/admin/product-availabilities/dtos/create-product-availabilities.dtos";
-import { OperationResult } from "@/types/api";
+import {
+  CheckProductAvailableOnAvailabilityResult,
+  OperationResult,
+} from "@/types/api";
 
 class AvailabilityProductService extends TransactionBaseService {
   async createByEntityManager(
@@ -157,6 +160,28 @@ class AvailabilityProductService extends TransactionBaseService {
     );
 
     return updateResult.affected > 0 ? { success: true } : { success: false };
+  }
+
+  async existsOneFor(
+    productId: string,
+    availabilityId: string,
+  ): Promise<CheckProductAvailableOnAvailabilityResult> {
+    const availabilityProdRepo = this.activeManager_.withRepository(
+      AvailabilityProductRepository,
+    );
+
+    const exists = await availabilityProdRepo.existsBy({
+      availability: {
+        id: availabilityId,
+      },
+      product: {
+        id: productId,
+      },
+    });
+
+    return {
+      exists,
+    };
   }
 }
 
