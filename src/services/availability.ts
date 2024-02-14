@@ -129,16 +129,20 @@ class AvailabilityService extends TransactionBaseService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, withRelations = true) {
     const availabilityRepo = this.activeManager_.getRepository(Availability);
+
+    const relations: FindOptionsRelations<Availability> = withRelations
+      ? {
+          availabilityProducts: {
+            product: true,
+          },
+        }
+      : {};
 
     const availability = await availabilityRepo.findOne({
       where: { id },
-      relations: {
-        availabilityProducts: {
-          product: true,
-        },
-      },
+      relations,
     });
 
     if (!availability) {
