@@ -4,6 +4,7 @@ import { AvailabilityStatus } from "../enums";
 import { AvailabilityProduct } from "./product-availability";
 import { Cart } from "./cart";
 import { Order } from "./order";
+import computeAvailabilityDateLimitTime from "@/utils/compute-availability-date";
 
 @Entity()
 export class Availability extends BaseEntity {
@@ -14,7 +15,7 @@ export class Availability extends BaseEntity {
   })
   status: AvailabilityStatus;
 
-  @Column({ type: "date", unique: true })
+  @Column({ type: "timestamp with time zone", unique: true })
   date: Date;
 
   @OneToMany(
@@ -31,6 +32,12 @@ export class Availability extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
+    // ensure that date is always set to limit time
+    const limitTime = computeAvailabilityDateLimitTime(this.date);
+    if (this.date !== limitTime) {
+      this.date = limitTime;
+    }
+
     this.id = generateEntityId(this.id, "availability");
   }
 }
