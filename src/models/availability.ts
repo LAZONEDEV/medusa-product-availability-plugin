@@ -5,6 +5,9 @@ import { AvailabilityProduct } from "./product-availability";
 import { Cart } from "./cart";
 import { Order } from "./order";
 import computeAvailabilityDateLimitTime from "@/utils/compute-availability-date";
+import checkAvailabilityNotExistsForADate from "@/utils/validator/check-availability-not-exists-for-date";
+import { ValidationErrorMessage } from "@/constants/validation-error-message";
+import BadRequestError from "@/error/BadRequestError";
 
 @Entity()
 export class Availability extends BaseEntity {
@@ -31,7 +34,14 @@ export class Availability extends BaseEntity {
   carts: Cart[];
 
   @BeforeInsert()
-  private beforeInsert(): void {
+  private async beforeInsert(): Promise<void> {
+    const exists = await checkAvailabilityNotExistsForADate(this.date);
+    if (exists) {
+      throw new BadRequestError(
+        ValidationErrorMessage.availabilityAlreadyExist,
+      );
+    }
+
     // ensure that date is always set to limit time
     const limitTime = computeAvailabilityDateLimitTime(this.date);
     if (this.date !== limitTime) {
