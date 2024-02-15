@@ -8,7 +8,7 @@ export class Availability1705503175655 implements MigrationInterface {
       `CREATE TYPE "public"."availability_status_enum" AS ENUM('active', 'inactive')`,
     );
     await queryRunner.query(
-      `CREATE TABLE "availability" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "status" "public"."availability_status_enum" NOT NULL DEFAULT 'active', "date" date NOT NULL, CONSTRAINT "UQ_e1d567785af01e81a94a8fcf59d" UNIQUE ("date"), CONSTRAINT "PK_05a8158cf1112294b1c86e7f1d3" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "availability" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "status" "public"."availability_status_enum" NOT NULL DEFAULT 'active', "date" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "UQ_e1d567785af01e81a94a8fcf59d" UNIQUE ("date"), CONSTRAINT "PK_05a8158cf1112294b1c86e7f1d3" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "availability_product" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "quantity" smallint, "productId" character varying, "availabilityId" character varying, CONSTRAINT "availability_product_unique_constraint" UNIQUE ("productId", "availabilityId"), CONSTRAINT "PK_8917f2b90ae8ef1156b90c4be72" PRIMARY KEY ("id"))`,
