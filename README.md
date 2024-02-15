@@ -22,15 +22,23 @@
     - [Retrieve list of availabilities](#retrieve-list-of-availabilities)
       - [Query parameters](#query-parameters)
       - [Responses](#responses)
-    - [Retrieve product availabilities for a availability](#retrieve-product-availabilities-for-a-availability)
-      - [Route parameters](#route-parameters)
+    - [Get Availability By ID](#get-availability-by-id)
       - [Responses](#responses-1)
-    - [Set availability on a cart](#set-availability-on-a-cart)
-      - [Route parameters](#route-parameters-1)
-      - [Request body](#request-body)
+    - [Check if a product is available on an availability](#check-if-a-product-is-available-on-an-availability)
+      - [Route parameters](#route-parameters)
+      - [Query parameters](#query-parameters-1)
       - [Responses](#responses-2)
+    - [Retrieve product availabilities for an availability](#retrieve-product-availabilities-for-an-availability)
+      - [Route parameters](#route-parameters-1)
+      - [Responses](#responses-3)
+    - [Set availability on a cart](#set-availability-on-a-cart)
+      - [Route parameters](#route-parameters-2)
+      - [Request body](#request-body)
+      - [Responses](#responses-4)
   - [Types](#types)
     - [GetAvailabilitiesResponseType](#getavailabilitiesresponsetype)
+  - [GetAvailabilityResponseType](#getavailabilityresponsetype)
+    - [CheckProductAvailableOnAvailabilityResult](#checkproductavailableonavailabilityresult)
     - [GetAvailabilityProductAvailabilitiesResponseType](#getavailabilityproductavailabilitiesresponsetype)
     - [APIOperationResponseType](#apioperationresponsetype)
     - [Availability](#availability)
@@ -86,10 +94,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
   <summary>
     <code>GET</code>
     <code>
-      <b>store/availbilities</b>
-    </code>
-    <code>
-      Retrieve list of availabilities
+      <b>store/availabilities</b>
     </code>
   </summary>
 
@@ -109,16 +114,61 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 
 </details>
 
-#### Retrieve product availabilities for a availability
+#### Get Availability By ID
 
 <details>
   <summary>
     <code>GET</code>
     <code>
-      <b>store/availbilities/{availabilityId}/products-availabilities</b>
+      <b>store/availabilities/{availabilityId}</b>
     </code>
+  </summary>
+
+##### Responses
+
+> | http code | content-type       | response                                                    |
+> | --------- | ------------------ | ----------------------------------------------------------- |
+> | `200`     | `application/json` | [GetAvailabilityResponseType](#getavailabilityresponsetype) |
+
+</details>
+
+#### Check if a product is available on an availability
+
+<details>
+  <summary>
+    <code>GET</code>
     <code>
-      Retrieve product availabilities for a availability
+      <b>products/{productId}/is-available-on</b>
+    </code>
+  </summary>
+
+##### Route parameters
+
+> | name      | type    | data type | description                                                |
+> | --------- | ------- | --------- | ---------------------------------------------------------- |
+> | productId | require | string    | The ID of the product whose availability you wish to check |
+
+##### Query parameters
+
+> | name           | type     | data type | description                               |
+> | -------------- | -------- | --------- | ----------------------------------------- |
+> | availabilityId | required | string    | The ID of the availability to be checked. |
+
+##### Responses
+
+> | http code | content-type       | response                                                                                |
+> | --------- | ------------------ | --------------------------------------------------------------------------------------- |
+> | `200`     | `application/json` | [CheckProductAvailableOnAvailabilityResult](#checkproductavailableonavailabilityresult) |
+
+</details>
+
+#### Retrieve product availabilities for an availability
+
+<details>
+  <summary>
+    <code>GET</code>
+    <code>
+      <b>store/availabilities/{availabilityId}/products-availabilities</b>
     </code>
   </summary>
 
@@ -140,11 +190,9 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
   <summary>
     <code>POST</code>
     <code>
-      <b>store/carts/{cartId}/set-availability/b>
+      <b>store/carts/{cartId}/set-availability</b>
     </code>
-    <code>
-      Retrieve product availabilities for a availability
-    </code>
+    
   </summary>
 
 ##### Route parameters
@@ -186,6 +234,32 @@ export interface GetAvailabilitiesResponseData {
 ```
 
 </details>
+
+### GetAvailabilityResponseType
+
+<details>
+  <summary> GetAvailabilityResponseType </summary>
+
+```ts
+export interface GetAvailabilityResponseType {
+  data: Omit<Availability, "availabilityProducts">;
+}
+```
+
+</details>
+
+#### CheckProductAvailableOnAvailabilityResult
+
+<details>
+  <summary> CheckProductAvailableOnAvailabilityResult </summary>
+
+```ts
+export interface CheckProductAvailableOnAvailabilityResult {
+  data: {
+    exists: boolean;
+  };
+}
+```
 
 #### GetAvailabilityProductAvailabilitiesResponseType
 
