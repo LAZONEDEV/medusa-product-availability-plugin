@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity, generateEntityId } from "@medusajs/medusa";
 import { AvailabilityStatus } from "../enums";
 import { AvailabilityProduct } from "./product-availability";
@@ -33,21 +33,34 @@ export class Availability extends BaseEntity {
   @OneToMany(() => Cart, (cart) => cart.availability)
   carts: Cart[];
 
+  @BeforeUpdate()
+  private async beforeUpdate(): Promise<void> {
+    this.checkDayUniqueness();
+    this.setDateValue();
+  }
+
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
+    this.checkDayUniqueness();
+    this.setDateValue();
+
+    this.id = generateEntityId(this.id, "availability");
+  }
+
+  private setDateValue() {
+    // ensure that date is always set to limit time
+    const limitTime = computeAvailabilityDateLimitTime(this.date);
+    if (this.date !== limitTime) {
+      this.date = limitTime;
+    }
+  }
+
+  private async checkDayUniqueness() {
     const exists = await checkAvailabilityNotExistsForADate(this.date);
     if (exists) {
       throw new BadRequestError(
         ValidationErrorMessage.availabilityAlreadyExist,
       );
     }
-
-    // ensure that date is always set to limit time
-    const limitTime = computeAvailabilityDateLimitTime(this.date);
-    if (this.date !== limitTime) {
-      this.date = limitTime;
-    }
-
-    this.id = generateEntityId(this.id, "availability");
   }
 }
