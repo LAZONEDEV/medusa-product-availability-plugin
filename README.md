@@ -96,9 +96,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>store/availabilities</b>
-    </code>
   </summary>
 
 ##### Query parameters
@@ -122,9 +120,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>store/availabilities/{availabilityId}</b>
-    </code>
   </summary>
 
 ##### Responses
@@ -140,9 +136,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>products/{productId}/is-available-on</b>
-    </code>
   </summary>
 
 ##### Route parameters
@@ -170,9 +164,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>store/availabilities/{availabilityId}/products-availabilities</b>
-    </code>
   </summary>
 
 ##### Route parameters
@@ -192,9 +184,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>POST</code>
-    <code>
       <b>store/carts/{cartId}/set-availability</b>
-    </code>
 
   </summary>
 
@@ -220,7 +210,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 
 #### Verify if the cart items match the availability
 
-This endpoint allows you to check whether the basket meets the availability conditions defined by the.
+This endpoint allows you to check whether the cart meets the availability conditions defined.
 
 <details>
   <summary>
