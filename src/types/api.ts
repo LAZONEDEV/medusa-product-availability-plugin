@@ -4,6 +4,7 @@ export type ApiErrorResponseType = {
   message: string;
   code: string;
   errors?: FieldError[];
+  payload?: object;
 };
 
 export type OperationResult = {

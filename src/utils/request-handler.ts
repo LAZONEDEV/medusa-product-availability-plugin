@@ -1,4 +1,5 @@
 import BadRequestError from "@/error/BadRequestError";
+import CartValidationError from "@/error/CartValidationFailure";
 import NotFoundError from "@/error/NotFoundError";
 import UnprocessableEntityError from "@/error/UnprocessableEntityError";
 import ValidationError from "@/error/ValidationError";
@@ -19,11 +20,11 @@ const getErrorStatusCode = (error: Error): number => {
     return 404;
   }
 
-  if (error instanceof BadRequestError) {
-    return 400;
-  }
-
-  if (error instanceof ValidationError) {
+  if (
+    error instanceof BadRequestError ||
+    error instanceof ValidationError ||
+    error instanceof CartValidationError
+  ) {
     return 400;
   }
 
@@ -47,6 +48,10 @@ export const createRequestHandler = (handler: RequestHandlerType) => {
 
       if (error instanceof ValidationError) {
         response.errors = error.payload;
+      }
+
+      if (error instanceof CartValidationError) {
+        response.payload = error.payload;
       }
 
       res.status(errorStatusCode).json(response);
