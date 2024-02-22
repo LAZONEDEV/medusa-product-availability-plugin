@@ -48,34 +48,36 @@ export function AvailabilitiesList() {
       </Table.Header>
 
       <Table.Body>
-        {availabilities.map((order) => {
-          const formattedDate = toLocaleDate(order.date);
+        {availabilities.map((availability) => {
+          const formattedDate = toLocaleDate(availability.date);
 
           return (
             <Table.Row
-              key={order.id}
+              key={availability.id}
               className="[&_td:last-child]:w-[1%] [&_td:last-child]:whitespace-nowrap"
             >
               <Table.Cell>{formattedDate}</Table.Cell>
 
               <Table.Cell>
                 <AvailabilityProductsList
-                  productAvailabilities={order.availabilityProducts}
+                  productAvailabilities={availability.availabilityProducts}
                 />
               </Table.Cell>
 
               <Table.Cell>
                 <StatusBadge
                   color={
-                    order.status === AvailabilityStatus.Active ? "green" : "red"
+                    availability.status === AvailabilityStatus.Active
+                      ? "green"
+                      : "red"
                   }
                 >
-                  {order.status}
+                  {availability.status}
                 </StatusBadge>
               </Table.Cell>
 
               <Table.Cell>
-                <Link to={order.id}>
+                <Link to={availability.id}>
                   <Pencil />
                 </Link>
               </Table.Cell>
