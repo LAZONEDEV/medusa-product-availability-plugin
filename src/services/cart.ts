@@ -123,7 +123,7 @@ class CartService extends MedusaCartService {
 
           throw new CartValidationError(
             {
-              code: CartValidationErrorCode.AVAILABILITY_EXPIRED,
+              code: CartValidationErrorCode.AVAILABLE_QUANTITY_EXCEEDED,
               message: errorMessage,
             },
             {
