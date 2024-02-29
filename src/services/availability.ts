@@ -17,6 +17,8 @@ import { ValidationErrorMessage } from "@/constants/validation-error-message";
 import NotFoundError from "@/error/NotFoundError";
 import { QueryPaginationDto } from "@/utils/dtos/QueryPaginationDto";
 import { GetStoreAvailabilitiesDto } from "@/api/store/availabilities/dtos/get-store-availabilities.dtos";
+import UnprocessableEntityError from "@/error/UnprocessableEntityError";
+import { OperationResult } from "@/types/api";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
@@ -150,6 +152,29 @@ class AvailabilityService extends TransactionBaseService {
     }
 
     return availability;
+  }
+
+  async delete(id: string): Promise<OperationResult> {
+    try {
+      const availabilityRepo = this.activeManager_.getRepository(Availability);
+      const availability = await availabilityRepo.findOne({
+        where: { id },
+        relations: { orders: true },
+      });
+
+      if (availability.orders.length > 0) {
+        throw new UnprocessableEntityError(
+          ValidationErrorMessage.availabilityHasCart,
+        );
+      }
+
+      const result = await availabilityRepo.delete({ id });
+      return {
+        success: result.affected > 0,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 }
 
