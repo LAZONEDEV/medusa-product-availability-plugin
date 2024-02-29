@@ -25,9 +25,7 @@ const AvailabilityDetailTitle = ({ date }: AvailabilityDetailTitleProps) => {
         <ArrowLeftMini /> Retour
       </Button>
 
-      <Heading className="mb-6">
-        Détails de la disponibilité du : {formattedDate}
-      </Heading>
+      <Heading>Détails de la disponibilité du : {formattedDate}</Heading>
     </>
   );
 };
