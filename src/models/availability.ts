@@ -24,6 +24,7 @@ export class Availability extends BaseEntity {
   @OneToMany(
     () => AvailabilityProduct,
     (availabilityProduct) => availabilityProduct.availability,
+    { cascade: ["remove"] },
   )
   availabilityProducts: AvailabilityProduct[];
 
