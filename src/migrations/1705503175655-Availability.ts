@@ -18,7 +18,7 @@ export class Availability1705503175655 implements MigrationInterface {
       `ALTER TABLE "availability_product" ADD CONSTRAINT "FK_976c28587ff9a0b4b9f65f5e5f0" FOREIGN KEY ("productId") REFERENCES "product"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "availability_product" ADD CONSTRAINT "FK_f357cd3fd9d5a5d3cd275a2e1c2" FOREIGN KEY ("availabilityId") REFERENCES "availability"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "availability_product" ADD CONSTRAINT "FK_f357cd3fd9d5a5d3cd275a2e1c2" FOREIGN KEY ("availabilityId") REFERENCES "availability"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "order" ADD "availabilityId" character varying`,
