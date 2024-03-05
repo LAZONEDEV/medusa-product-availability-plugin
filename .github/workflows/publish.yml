@@ -1,0 +1,24 @@
+name: Publish to NPM
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  id-token: write
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+      - run: yarn
+      - run: yarn build
+      - run: npm publish --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
