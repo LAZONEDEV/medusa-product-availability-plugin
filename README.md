@@ -35,6 +35,9 @@
       - [Route parameters](#route-parameters-2)
       - [Request body](#request-body)
       - [Responses](#responses-4)
+    - [Verify if the cart items match the availability](#verify-if-the-cart-items-match-the-availability)
+      - [Route parameters](#route-parameters-3)
+      - [Responses](#responses-5)
   - [Types](#types)
     - [GetAvailabilitiesResponseType](#getavailabilitiesresponsetype)
   - [GetAvailabilityResponseType](#getavailabilityresponsetype)
@@ -93,9 +96,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>store/availabilities</b>
-    </code>
   </summary>
 
 ##### Query parameters
@@ -119,9 +120,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>store/availabilities/{availabilityId}</b>
-    </code>
   </summary>
 
 ##### Responses
@@ -137,9 +136,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>products/{productId}/is-available-on</b>
-    </code>
   </summary>
 
 ##### Route parameters
@@ -167,9 +164,7 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>GET</code>
-    <code>
       <b>store/availabilities/{availabilityId}/products-availabilities</b>
-    </code>
   </summary>
 
 ##### Route parameters
@@ -189,10 +184,8 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 <details>
   <summary>
     <code>POST</code>
-    <code>
       <b>store/carts/{cartId}/set-availability</b>
-    </code>
-    
+
   </summary>
 
 ##### Route parameters
@@ -212,6 +205,30 @@ In the sidebar of the admin area, you'll find a `Availabilities` menu, which all
 > | http code | content-type       | response                                                                           |
 > | --------- | ------------------ | ---------------------------------------------------------------------------------- |
 > | `200`     | `application/json` | [GetAvailabilityProductAvailabilitiesResponseType](#getavailabilitiesresponsetype) |
+
+</details>
+
+#### Verify if the cart items match the availability
+
+This endpoint allows you to check whether the cart meets the availability conditions defined.
+
+<details>
+  <summary>
+    <code>GET</code>
+      <b>store/carts/{cartId}/verify-if-matches-availability</b>
+
+  </summary>
+
+##### Route parameters
+
+- `cartId` the cart identifier on which you wish to define availability
+
+##### Responses
+
+> | http code | content-type       | response                                                                         |
+> | --------- | ------------------ | -------------------------------------------------------------------------------- |
+> | `200`     | `application/json` | [APIOperationResponseType](#apioperationresponsetype)                            |
+> | `400`     | `application/json` | [Reed more on cart validation error reference](#cart-validation-error-reference) |
 
 </details>
 
