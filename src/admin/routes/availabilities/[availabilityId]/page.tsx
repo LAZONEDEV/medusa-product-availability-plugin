@@ -5,6 +5,7 @@ import { useGetAvailability } from "../../../hooks/availabilities/get-availabili
 import AvailabilityDetailTitle from "../../../components/availability/detail-page/AvailabilityDetailTitle";
 import AvailabilityDetailsProductsList from "../../../components/availability/detail-page/AvailabilityDetailsProductsList";
 import AddNewProductAvailabilitiesForm from "../../../components/availability/detail-page/AddNewProductAvailabilitiesForm";
+import DeleteAvailabilityPrompt from "../../../components/availability/detail-page/DeleteAvailabilityPrompt";
 
 const Page = () => {
   const { data, error, isLoading, refetch, availabilityId } =
@@ -22,7 +23,11 @@ const Page = () => {
     <section className="pb-8">
       <Toaster />
 
-      <AvailabilityDetailTitle date={data.date} />
+      <div className="mb-4">
+        <AvailabilityDetailTitle date={data.date} />
+
+        <DeleteAvailabilityPrompt availabilityId={availabilityId} />
+      </div>
 
       <AvailabilityDetailsProductsList
         productAvailabilities={data.availabilityProducts}
