@@ -1,4 +1,4 @@
-import { Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik, FormikHelpers, FormikValues } from "formik";
 import { Button } from "@medusajs/ui";
 import { ReactNode, useState } from "react";
 import type { ProductLike } from "@/admin/types";
@@ -14,7 +14,7 @@ interface CreateProductAvailabilitiesDumbFormProps<T> {
   onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
 }
 
-function CreateProductAvailabilitiesDumbForm<T>({
+function CreateProductAvailabilitiesDumbForm<T extends FormikValues>({
   children,
   onSubmit,
   initialValues,

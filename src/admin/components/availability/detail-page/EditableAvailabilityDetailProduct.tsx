@@ -42,7 +42,7 @@ const EditableAvailabilityDetailProduct = ({
           return (
             <Form>
               <AvailabilityDetailProductItem
-                image={product.thumbnail}
+                image={product.thumbnail || ""}
                 title={product.title}
                 isSubmitting={isSubmitting}
                 isRemoving={isDeleting}

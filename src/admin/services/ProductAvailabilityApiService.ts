@@ -6,7 +6,6 @@ import {
   CreateAvailabilityProductItem,
   UpdateAvailabilityProductItem,
 } from "../types/api";
-import type { CreateProductsAvailabilitiesDto } from "@/api/admin/product-availabilities/dtos/create-product-availabilities.dtos";
 
 class ProductAvailabilityApiService {
   static path = medusaApiRoutes.productAvailability;
@@ -17,7 +16,7 @@ class ProductAvailabilityApiService {
         APIResponse<OperationResult>
       >(`${ProductAvailabilityApiService.path}/${id}`);
 
-      return operationResult.data;
+      return operationResult!.data;
     } catch (error) {
       throw error;
     }
@@ -32,7 +31,7 @@ class ProductAvailabilityApiService {
         APIResponse<OperationResult>
       >(`${ProductAvailabilityApiService.path}/${id}`, data);
 
-      return operationResult.data;
+      return operationResult!.data;
     } catch (error) {
       throw error;
     }
@@ -42,7 +41,7 @@ class ProductAvailabilityApiService {
     availabilityId: string,
     availabilityProducts: CreateAvailabilityProductItem[],
   ): Promise<AvailabilityProduct> {
-    const createPayload: CreateProductsAvailabilitiesDto = {
+    const createPayload = {
       availabilityId,
       availabilityProducts,
     };
@@ -52,7 +51,7 @@ class ProductAvailabilityApiService {
         APIResponse<AvailabilityProduct>
       >(`${ProductAvailabilityApiService.path}`, createPayload);
 
-      return operationResult.data;
+      return operationResult!.data;
     } catch (error) {
       throw error;
     }

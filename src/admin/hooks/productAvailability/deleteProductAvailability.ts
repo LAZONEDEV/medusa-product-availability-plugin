@@ -2,8 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@medusajs/ui";
 import ProductAvailabilityApiService from "../../services/ProductAvailabilityApiService";
 import useInvalidateAvailabilityQuery from "./useInvalidateAvailabilityQuery";
+import getErrorMessage from "../../utils/get-error-message";
 
-const useDeleteProductAvailability = (id: string, availabilityId) => {
+const useDeleteProductAvailability = (id: string, availabilityId: string) => {
   const { toast } = useToast();
   const invalidateAvailabilityQuery =
     useInvalidateAvailabilityQuery(availabilityId);
@@ -38,9 +39,10 @@ const useDeleteProductAvailability = (id: string, availabilityId) => {
       });
       return;
     } catch (error) {
+      const errorMessage = getErrorMessage(error);
       toast({
         title: "Erreur lors de la suppression",
-        description: error.message,
+        description: errorMessage,
         variant: "error",
       });
     }

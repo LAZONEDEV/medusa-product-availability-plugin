@@ -4,6 +4,7 @@ import { useToast } from "@medusajs/ui";
 import ProductAvailabilityApiService from "../../services/ProductAvailabilityApiService";
 import type { UpdateAvailabilityProductItem } from "@/admin/types/api";
 import useInvalidateAvailabilityQuery from "./useInvalidateAvailabilityQuery";
+import getErrorMessage from "../../utils/get-error-message";
 
 const useUpdateProductAvailability = (id: string, availabilityId: string) => {
   const { toast } = useToast();
@@ -38,9 +39,11 @@ const useUpdateProductAvailability = (id: string, availabilityId: string) => {
       });
       return;
     } catch (error) {
+      const errorMessage = getErrorMessage(error);
+
       toast({
         title: "Erreur lors de la mise à jour de la disponibilité",
-        description: error.message,
+        description: errorMessage,
         variant: "error",
       });
     }

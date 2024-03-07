@@ -5,13 +5,14 @@ import UnprocessableEntityError from "@/error/UnprocessableEntityError";
 import ValidationError from "@/error/ValidationError";
 import { ApiErrorResponseType } from "@/types/api";
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import ErrorWithCode from "@/error/ErrorWithCode";
 
 type RequestHandlerType = (
   req: MedusaRequest,
   res: MedusaResponse,
 ) => Promise<unknown>;
 
-const getErrorStatusCode = (error: Error): number => {
+const getErrorStatusCode = (error: unknown): number => {
   if (error instanceof UnprocessableEntityError) {
     return 422;
   }
@@ -38,12 +39,14 @@ export const createRequestHandler = (handler: RequestHandlerType) => {
       res.json({ data: result });
     } catch (error) {
       console.error(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
 
       const errorStatusCode = getErrorStatusCode(error);
 
       const response: ApiErrorResponseType = {
-        message: error.message,
-        code: error.code,
+        message: errorMessage,
+        code: error instanceof ErrorWithCode ? error.code : "",
       };
 
       if (error instanceof ValidationError) {

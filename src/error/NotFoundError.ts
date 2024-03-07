@@ -1,10 +1,9 @@
 import { ErrorCode } from "@/constants/errors-message";
+import ErrorWithCode from "./ErrorWithCode";
 
-class NotFoundError extends Error {
-  code: ErrorCode = ErrorCode.NOT_FOUND;
-
+class NotFoundError extends ErrorWithCode {
   constructor(message: string) {
-    super(message);
+    super(ErrorCode.NOT_FOUND, message);
   }
 }
 

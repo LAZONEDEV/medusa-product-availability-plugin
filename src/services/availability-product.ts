@@ -106,7 +106,9 @@ class AvailabilityProductService extends TransactionBaseService {
 
     const deletionResult = await availabilityProdRepo.delete({ id });
 
-    return deletionResult.affected > 0 ? { success: true } : { success: false };
+    return deletionResult.affected && deletionResult.affected > 0
+      ? { success: true }
+      : { success: false };
   }
 
   async update(
@@ -159,7 +161,9 @@ class AvailabilityProductService extends TransactionBaseService {
       { quantity: data.quantity },
     );
 
-    return updateResult.affected > 0 ? { success: true } : { success: false };
+    return updateResult.affected && updateResult.affected > 0
+      ? { success: true }
+      : { success: false };
   }
 
   async existsOneFor(

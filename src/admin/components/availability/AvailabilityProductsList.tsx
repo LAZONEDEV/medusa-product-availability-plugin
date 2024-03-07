@@ -16,7 +16,7 @@ const AvailabilityProductsList = ({
               className="min-w-[2rem] h-8 rounded-full border border-gray-300 hover:border-black hover:z-10"
               title={productAvailability.product.title}
               alt={productAvailability.product.title}
-              src={productAvailability.product.thumbnail}
+              src={productAvailability.product.thumbnail || ""}
             />
           </div>
         );

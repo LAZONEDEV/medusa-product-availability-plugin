@@ -15,7 +15,7 @@ const Page = () => {
     return <AvailabilityLoadingVue />;
   }
 
-  if (error) {
+  if (error || !data) {
     return <AvailabilityLoadFailed onRetry={refetch} />;
   }
 

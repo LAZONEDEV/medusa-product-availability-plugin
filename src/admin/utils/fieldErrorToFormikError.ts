@@ -1,24 +1,26 @@
 import { FieldError } from "@/types/error";
 
 type FormikError = {
-  [key: string]: FormikError[] | string | (FormikError | string)[];
+  [key: string]: string | (FormikError | string)[];
 };
 
 export const fieldErrorsToFormikErrors = (errors: FieldError[]) => {
   const formikErrors: FormikError = {};
 
   errors.forEach((currentError) => {
-    if (currentError.children) {
+    if (currentError.children?.length) {
       formikErrors[currentError.field] = [];
 
       currentError.children.forEach((item) => {
+        const itemIndex = Number(item.field);
         if (item.children) {
-          formikErrors[currentError.field][item.field] =
+          (formikErrors[currentError.field] as FormikError[])[itemIndex] =
             fieldErrorsToFormikErrors(item.children!);
           return;
         }
 
-        formikErrors[currentError.field][item.field] = item.message!;
+        (formikErrors[currentError.field] as string[])[itemIndex] =
+          item.message!;
       });
       return;
     }

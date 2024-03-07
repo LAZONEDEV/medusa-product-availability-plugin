@@ -7,7 +7,9 @@ class HTTPClient {
 
   constructor(baseURL: string, defaultOptions?: RequestInit) {
     this.baseURL = baseURL;
-    this.defaultOptions = defaultOptions;
+    if (defaultOptions) {
+      this.defaultOptions = defaultOptions;
+    }
   }
 
   private async request<T = any>(
@@ -44,20 +46,23 @@ class HTTPClient {
     }
   }
 
-  async get<T = any>(url: string, reqOptions: RequestInit = {}): Promise<T> {
+  async get<T = any>(
+    url: string,
+    reqOptions: RequestInit = {},
+  ): Promise<T | undefined> {
     const options: RequestInit = {
       method: "GET",
       ...reqOptions,
     };
 
-    return this.request<T>(url, options);
+    return this.request<T>(url, options)!;
   }
 
   async post<T = any, P = any>(
     url: string,
     data: P,
     { headers, ...reqOptions }: RequestInit = {},
-  ): Promise<T> {
+  ): Promise<T | undefined> {
     const options: RequestInit = {
       method: "POST",
       headers: {
@@ -75,7 +80,7 @@ class HTTPClient {
     url: string,
     data: P,
     { headers, ...reqOptions }: RequestInit = {},
-  ): Promise<T> {
+  ): Promise<T | undefined> {
     const options: RequestInit = {
       method: "PUT",
       headers: {
@@ -89,7 +94,10 @@ class HTTPClient {
     return this.request<T>(url, options);
   }
 
-  async delete<T = any>(url: string, reqOptions: RequestInit = {}): Promise<T> {
+  async delete<T = any>(
+    url: string,
+    reqOptions: RequestInit = {},
+  ): Promise<T | undefined> {
     const options: RequestInit = {
       method: "DELETE",
       ...reqOptions,

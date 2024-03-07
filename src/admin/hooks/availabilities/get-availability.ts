@@ -5,7 +5,7 @@ import apiRequestKey from "../../constants/apiRequestKey";
 import AvailabilityApiService from "../../services/AvailabilityApiService";
 
 export const useGetAvailability = () => {
-  const { availabilityId } = useParams();
+  const { availabilityId } = useParams() as { availabilityId: string };
 
   const fetchAvailability = () => {
     return AvailabilityApiService.getById(availabilityId);

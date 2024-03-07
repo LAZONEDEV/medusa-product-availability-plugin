@@ -19,7 +19,7 @@ const AddNewProductAvailabilitiesForm = ({
   const { data } = useGetAvailability();
   const { handleCreation } = useCreateNewProductAvailabilities(availabilityId);
   const availabilityProducts = useMemo(() => {
-    return data.availabilityProducts.map(
+    return data?.availabilityProducts.map(
       (item) => item.product as unknown as ProductLike,
     );
   }, [data]);
