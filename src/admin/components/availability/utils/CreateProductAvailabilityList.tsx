@@ -44,7 +44,7 @@ const CreateProductAvailabilityList = ({
 
     const newFormikValue = products.map((product) => ({
       quantity: 0,
-      productId: product.id,
+      productId: product.id!,
     }));
 
     setValue([...value, ...newFormikValue]);
@@ -68,10 +68,10 @@ const CreateProductAvailabilityList = ({
     ...productsToExcludeInPicker,
   ];
   const hasUnselectedProduct =
-    products?.length > allProductsToExcludeInPicker.length;
+    products?.length ?? 0 > allProductsToExcludeInPicker.length;
 
   const noSelectionAvailableMessage =
-    products.length === 0
+    products?.length === 0
       ? "Vous n'avez aucun produit dans votre boutique actuellement"
       : "Tous les produits sont déjà ajoutés à cette disponibilité";
 
@@ -83,17 +83,17 @@ const CreateProductAvailabilityList = ({
         <div className="mt-2 space-y-2">
           {selectedProducts.map((product, index) => {
             const onRemove = () => {
-              onRemoveItem(product.id);
-              removeItemFromFormik(product.id);
+              onRemoveItem(product.id!);
+              removeItemFromFormik(product.id!);
             };
 
             return (
               <ProductAvailabilityItemField
                 onRemove={onRemove}
                 key={product.id}
-                productId={product.id}
-                image={product.thumbnail}
-                title={product.title}
+                productId={product.id!}
+                image={product.thumbnail || ""}
+                title={product.title || ""}
                 fieldName={`availabilityProducts[${index}]`}
               />
             );
@@ -103,7 +103,7 @@ const CreateProductAvailabilityList = ({
 
       {hasUnselectedProduct ? (
         <ProductsPicker
-          products={products}
+          products={products ?? []}
           alreadySelectedProducts={allProductsToExcludeInPicker}
           onProductsSelected={handleSelectedProductsChange}
         />

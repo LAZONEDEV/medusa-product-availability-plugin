@@ -25,7 +25,7 @@ class AvailabilityApiService {
         APIResponse<Availability>
       >(`${AvailabilityApiService.path}/${id}`);
 
-      return availability.data;
+      return availability!.data;
     } catch (error) {
       throw error;
     }
@@ -37,7 +37,7 @@ class AvailabilityApiService {
         APIResponse<OperationResult>
       >(`${AvailabilityApiService.path}/${id}`);
 
-      return availability.data;
+      return availability!.data;
     } catch (error) {
       throw error;
     }

@@ -20,18 +20,17 @@ const ProductsPicker = ({
 
   const availableProductsForSelection = useMemo(() => {
     // keep trace for already selected products
-    const selectedProductsMap = alreadySelectedProducts.reduce(
-      (acc, currentItem) => {
-        acc[currentItem.id] = true;
-        return acc;
-      },
-      {},
-    );
+    const selectedProductsMap = alreadySelectedProducts.reduce<
+      Record<string, boolean>
+    >((acc, currentItem) => {
+      acc[currentItem.id!] = true;
+      return acc;
+    }, {});
 
     // filter out not already selected products
     return (
       products?.filter((product) => {
-        return !selectedProductsMap[product.id];
+        return !selectedProductsMap[product.id!];
       }) || []
     );
   }, [products, alreadySelectedProducts]);
@@ -77,8 +76,8 @@ const ProductsPicker = ({
               <ProductPickerItem
                 key={product.id}
                 checked={selected}
-                title={product.title}
-                image={product.thumbnail}
+                title={product.title || ""}
+                image={product.thumbnail || ""}
                 onChange={() => handleItemCheckedChange(product)}
               />
             );

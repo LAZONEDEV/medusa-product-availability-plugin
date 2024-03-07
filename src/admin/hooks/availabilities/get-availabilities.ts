@@ -20,7 +20,7 @@ export const useGetAvailabilities = () => {
   });
 
   const availabilities = data?.data.availabilities;
-  const totalAvailabilitiesCount = data?.data.totalCount;
+  const totalAvailabilitiesCount = data?.data.totalCount || 0;
 
   const pageCount = Math.ceil(totalAvailabilitiesCount / AVAILABILITY_PER_PAGE);
   const canPreviousPage = currentPage !== 0;

@@ -1,10 +1,9 @@
 import { ErrorCode } from "@/constants/errors-message";
+import ErrorWithCode from "./ErrorWithCode";
 
-class UnprocessableEntityError extends Error {
-  code: ErrorCode = ErrorCode.UNPROCESSABLE_ENTITY_ERROR;
-
+class UnprocessableEntityError extends ErrorWithCode {
   constructor(message: string) {
-    super(message);
+    super(ErrorCode.UNPROCESSABLE_ENTITY_ERROR, message);
   }
 }
 

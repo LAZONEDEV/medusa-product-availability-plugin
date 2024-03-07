@@ -31,7 +31,7 @@ export interface AvailabilityProduct {
 
 export interface CreateAvailabilityProductItem {
   productId: string;
-  quantity: number;
+  quantity: number | null;
 }
 
 export interface CreateAvailabilityDto {

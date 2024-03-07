@@ -21,7 +21,7 @@ const ProductItemField = ({
   const [{ value }, , { setValue }] =
     useField<CreateAvailabilityProductItem>(fieldName);
 
-  const onQuantityChange = (quantity: number) => {
+  const onQuantityChange = (quantity: number | null) => {
     setValue({
       quantity,
       productId,

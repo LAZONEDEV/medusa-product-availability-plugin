@@ -157,7 +157,7 @@ class AvailabilityService extends TransactionBaseService {
   async delete(id: string): Promise<OperationResult> {
     try {
       const availabilityRepo = this.activeManager_.getRepository(Availability);
-      const availability = await availabilityRepo.findOne({
+      const availability = await availabilityRepo.findOneOrFail({
         where: { id },
         relations: { orders: true },
       });
@@ -170,7 +170,7 @@ class AvailabilityService extends TransactionBaseService {
 
       const result = await availabilityRepo.delete({ id });
       return {
-        success: result.affected > 0,
+        success: result.affected ? result.affected > 0 : false,
       };
     } catch (error) {
       throw error;

@@ -18,6 +18,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "checkJs": false,
+    "strict": true,
+    "strictPropertyInitialization": false,
     "paths": {
       "@/*": ["./src/*"],
       "@/admin-api/*": ["./src/api/admin/*"],

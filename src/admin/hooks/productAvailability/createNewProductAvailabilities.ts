@@ -9,6 +9,7 @@ import useInvalidateAvailabilityQuery from "./useInvalidateAvailabilityQuery";
 import { FormikHelpers } from "formik";
 import BadRequestHttpClientError from "../../errors/BadRequestHttpClientError";
 import { fieldErrorsToFormikErrors } from "../../utils/fieldErrorToFormikError";
+import getErrorMessage from "../../utils/get-error-message";
 
 const useCreateNewProductAvailabilities = (availabilityId: string) => {
   const { toast } = useToast();
@@ -40,16 +41,16 @@ const useCreateNewProductAvailabilities = (availabilityId: string) => {
       formikHelpers.resetForm();
       invalidateAvailabilityQuery();
     } catch (error) {
+      const errorMessage = getErrorMessage(error);
       toast({
         title: "Échec de création des disponibilités",
         description:
-          error.message ||
-          "La création des disponibilités de produits a échoué",
+          errorMessage || "La création des disponibilités de produits a échoué",
         variant: "error",
       });
 
       if (error instanceof BadRequestHttpClientError) {
-        const formikErrors = fieldErrorsToFormikErrors(error.payload);
+        const formikErrors = fieldErrorsToFormikErrors(error.payload || []);
         formikHelpers.setErrors(formikErrors);
       }
     }
