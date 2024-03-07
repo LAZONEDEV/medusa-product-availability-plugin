@@ -9,6 +9,7 @@ import AvailabilityApiService from "../../services/AvailabilityApiService";
 import adminRoutes from "../../constants/adminRoutes";
 import { useQueryClient } from "@tanstack/react-query";
 import apiRequestKey from "../../constants/apiRequestKey";
+import getErrorMessage from "../../utils/get-error-message";
 
 export const useCreateAvailabilityMutation = () => {
   const { toast } = useToast();
@@ -34,17 +35,19 @@ export const useCreateAvailabilityMutation = () => {
       });
       navigate(adminRoutes.availabilities);
     } catch (error) {
+      const errorMessage = getErrorMessage(error);
       toast({
         title: "Échec de création de la disponibilité",
-        description: error.message,
+        description: errorMessage,
         variant: "error",
       });
       if (error instanceof BadRequestHttpClientError) {
-        const formikErrors = fieldErrorsToFormikErrors(error.payload);
+        const formikErrors = fieldErrorsToFormikErrors(error.payload || []);
+        console.log(formikErrors);
         formikHelpers.setErrors(formikErrors);
       }
 
-      if (error.message === "VALIDATION_ERROR") {
+      if (errorMessage === "Validation error") {
         toast({
           title: "Informations incorrectes",
           description:

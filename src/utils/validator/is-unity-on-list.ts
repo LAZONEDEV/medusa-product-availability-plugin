@@ -8,7 +8,7 @@ const checkUniquenessOnList = async (
   value: Array<object>,
   validationArguments: ValidationArguments,
 ) => {
-  const [uniquePropertyName] = validationArguments.constraints;
+  const [uniquePropertyName] = validationArguments.constraints as [string];
 
   if (!Array.isArray(value)) {
     return true;
@@ -16,7 +16,7 @@ const checkUniquenessOnList = async (
 
   const propertyValueMap: Record<string | number, boolean> = {};
 
-  for (const child of value as object[]) {
+  for (const child of value as Record<string, string | number>[]) {
     const currentValue = child[uniquePropertyName];
     if (currentValue === undefined) {
       continue;

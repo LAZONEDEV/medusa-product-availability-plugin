@@ -32,7 +32,7 @@ export function AvailabilitiesList() {
     return <ErrorView onRetry={refetch} />;
   }
 
-  if (availabilities.length === 0) {
+  if (availabilities?.length === 0) {
     return <EmptyList />;
   }
 
@@ -48,7 +48,7 @@ export function AvailabilitiesList() {
       </Table.Header>
 
       <Table.Body>
-        {availabilities.map((availability) => {
+        {availabilities?.map((availability) => {
           const formattedDate = toLocaleDate(availability.date);
 
           return (
@@ -87,7 +87,7 @@ export function AvailabilitiesList() {
       </Table.Body>
 
       <Table.Pagination
-        count={availabilities.length}
+        count={availabilities?.length || 0}
         pageSize={pageSize}
         pageIndex={currentPage}
         pageCount={pageCount}
