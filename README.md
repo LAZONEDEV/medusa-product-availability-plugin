@@ -380,7 +380,8 @@ type Payload = {
 
 ```ts
 type Payload = {
-  availableQuantity: number; // the now available quantity
+  availableQuantity: number; // the now available quantity,
+  productTitle: string; // the title of the product
 };
 ```
 

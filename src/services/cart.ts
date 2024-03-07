@@ -128,6 +128,7 @@ class CartService extends MedusaCartService {
             },
             {
               availableQuantity,
+              productTitle: product.title,
             },
           );
         }
