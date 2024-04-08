@@ -31,116 +31,118 @@ class CartService extends MedusaCartService {
   }
 
   async verifyIfMatchesAvailability(cartId: string) {
-    try {
-      const availabilityProdRepo = this.activeManager_.withRepository(
-        AvailabilityProductRepository,
-      );
-      const orderRepo = this.activeManager_.getRepository(Order);
-
-      const cart = await this.retrieve(cartId, {
-        relations: [
-          "items.variant.product",
-          "availability.availabilityProducts.product",
-        ],
-      });
-
-      if (!cart.availability) {
-        throw new CartValidationError(
-          cartCompletionErrorsInfo.AVAILABILITY_NOT_SET_ON_CART!,
+    return this.atomicPhase_(async (entityManager) => {
+      try {
+        const availabilityProdRepo = entityManager.withRepository(
+          AvailabilityProductRepository,
         );
-      }
+        const orderRepo = entityManager.getRepository(Order);
 
-      const availability: Availability = cart.availability;
+        const cart = await this.retrieve(cartId, {
+          relations: [
+            "items.variant.product",
+            "availability.availabilityProducts.product",
+          ],
+        });
 
-      if (availability.status === AvailabilityStatus.Inactive) {
-        throw new CartValidationError(
-          cartCompletionErrorsInfo.AVAILABILITY_INACTIVE!,
-        );
-      }
-
-      // checking expiration
-      if (new Date(availability.date) < new Date()) {
-        throw new CartValidationError(
-          cartCompletionErrorsInfo.AVAILABILITY_EXPIRED!,
-        );
-      }
-
-      // check availability for each product in the cart
-      for (const item of cart.items) {
-        const product = item.variant.product;
-
-        const productAvailability = availability.availabilityProducts.find(
-          (p) => p.product.id === product.id,
-        );
-
-        if (!productAvailability) {
-          const errorMessage =
-            ValidationErrorMessage.productNotAvailableOnTheAvailability(
-              product.title,
-            );
-
+        if (!cart.availability) {
           throw new CartValidationError(
-            {
-              code: CartValidationErrorCode.PRODUCT_NOT_AVAILABLE_ON_AVAILABILITY,
-              message: errorMessage,
-            },
-            { productTitle: product.title },
+            cartCompletionErrorsInfo.AVAILABILITY_NOT_SET_ON_CART!,
           );
         }
 
-        if (productAvailability.quantity === null) {
-          // null as quantity means infinite, then just continue
-          continue;
-        }
+        const availability: Availability = cart.availability;
 
-        const placedOrder = await availabilityProdRepo.getPlacedOrderQuantity(
-          productAvailability.id,
-          orderRepo,
-        );
-
-        const availableQuantity = productAvailability.quantity - placedOrder;
-
-        if (availableQuantity === 0) {
-          const errorMessage =
-            ValidationErrorMessage.productNoLongerAvailableOnAvailability(
-              product.title,
-            );
+        if (availability.status === AvailabilityStatus.Inactive) {
           throw new CartValidationError(
-            {
-              code: CartValidationErrorCode.PRODUCT_NO_LONGER_AVAILABLE_ON_AVAILABILITY,
-              message: errorMessage,
-            },
-            { productTitle: product.title },
+            cartCompletionErrorsInfo.AVAILABILITY_INACTIVE!,
           );
         }
 
-        if (availableQuantity < item.quantity) {
-          const errorMessage =
-            ValidationErrorMessage.availableQuantityExceededError(
-              product.title,
-              availableQuantity,
-            );
-
+        // checking expiration
+        if (new Date(availability.date) < new Date()) {
           throw new CartValidationError(
-            {
-              code: CartValidationErrorCode.AVAILABLE_QUANTITY_EXCEEDED,
-              message: errorMessage,
-            },
-            {
-              availableQuantity,
-              productTitle: product.title,
-            },
+            cartCompletionErrorsInfo.AVAILABILITY_EXPIRED!,
           );
         }
+
+        // check availability for each product in the cart
+        for (const item of cart.items) {
+          const product = item.variant.product;
+
+          const productAvailability = availability.availabilityProducts.find(
+            (p) => p.product.id === product.id,
+          );
+
+          if (!productAvailability) {
+            const errorMessage =
+              ValidationErrorMessage.productNotAvailableOnTheAvailability(
+                product.title,
+              );
+
+            throw new CartValidationError(
+              {
+                code: CartValidationErrorCode.PRODUCT_NOT_AVAILABLE_ON_AVAILABILITY,
+                message: errorMessage,
+              },
+              { productTitle: product.title },
+            );
+          }
+
+          if (productAvailability.quantity === null) {
+            // null as quantity means infinite, then just continue
+            continue;
+          }
+
+          const placedOrder = await availabilityProdRepo.getPlacedOrderQuantity(
+            productAvailability.id,
+            orderRepo,
+          );
+
+          const availableQuantity = productAvailability.quantity - placedOrder;
+
+          if (availableQuantity === 0) {
+            const errorMessage =
+              ValidationErrorMessage.productNoLongerAvailableOnAvailability(
+                product.title,
+              );
+            throw new CartValidationError(
+              {
+                code: CartValidationErrorCode.PRODUCT_NO_LONGER_AVAILABLE_ON_AVAILABILITY,
+                message: errorMessage,
+              },
+              { productTitle: product.title },
+            );
+          }
+
+          if (availableQuantity < item.quantity) {
+            const errorMessage =
+              ValidationErrorMessage.availableQuantityExceededError(
+                product.title,
+                availableQuantity,
+              );
+
+            throw new CartValidationError(
+              {
+                code: CartValidationErrorCode.AVAILABLE_QUANTITY_EXCEEDED,
+                message: errorMessage,
+              },
+              {
+                availableQuantity,
+                productTitle: product.title,
+              },
+            );
+          }
+        }
+
+        return {
+          success: true,
+          cart,
+        };
+      } catch (error) {
+        throw error;
       }
-
-      return {
-        success: true,
-        cart,
-      };
-    } catch (error) {
-      throw error;
-    }
+    });
   }
 }
 
