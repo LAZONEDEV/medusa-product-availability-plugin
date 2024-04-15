@@ -9,6 +9,7 @@ import { Availability } from "@/models/availability";
 import AvailabilityProductRepository from "@/repositories/product-availability";
 import { OperationResult } from "@/types/api";
 import { CartService as MedusaCartService, Order } from "@medusajs/medusa";
+import { EntityManager } from "typeorm";
 
 class CartService extends MedusaCartService {
   async setAvailability(
@@ -30,12 +31,15 @@ class CartService extends MedusaCartService {
     }
   }
 
-  async verifyIfMatchesAvailability(cartId: string) {
+  private async handleAvailabilityMatchesVerification(
+    cartId: string,
+    entityManager: EntityManager,
+  ) {
     try {
-      const availabilityProdRepo = this.activeManager_.withRepository(
+      const availabilityProdRepo = entityManager.withRepository(
         AvailabilityProductRepository,
       );
-      const orderRepo = this.activeManager_.getRepository(Order);
+      const orderRepo = entityManager.getRepository(Order);
 
       const cart = await this.retrieve(cartId, {
         relations: [
@@ -141,6 +145,12 @@ class CartService extends MedusaCartService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async verifyIfMatchesAvailability(cartId: string) {
+    return this.atomicPhase_(async (entityManager) =>
+      this.handleAvailabilityMatchesVerification(cartId, entityManager),
+    );
   }
 }
 
