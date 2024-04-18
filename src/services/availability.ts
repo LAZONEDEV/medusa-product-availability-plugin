@@ -20,6 +20,7 @@ import { QueryPaginationDto } from "@/utils/dtos/QueryPaginationDto";
 import { GetStoreAvailabilitiesDto } from "@/api/store/availabilities/dtos/get-store-availabilities.dtos";
 import UnprocessableEntityError from "@/error/UnprocessableEntityError";
 import { OperationResult } from "@/types/api";
+import type { ChangeAvailabilityStatusDto } from "@/api/admin/availabilities/[id]/change-status/dtos/change-status.dtos";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
@@ -189,6 +190,22 @@ class AvailabilityService extends TransactionBaseService {
 
   async delete(id: string): Promise<OperationResult> {
     return this.atomicPhase_((em) => this.handleAvailabilityDeletion(id, em));
+  }
+
+  async changeState({
+    availabilityId,
+    status,
+  }: ChangeAvailabilityStatusDto): Promise<OperationResult> {
+    const availabilityRepo = this.activeManager_.getRepository(Availability);
+
+    const updateResult = await availabilityRepo.update(
+      { id: availabilityId },
+      { status },
+    );
+
+    return {
+      success: !!updateResult.affected,
+    };
   }
 }
 
