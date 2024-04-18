@@ -21,7 +21,7 @@ const Page = () => {
   }
 
   return (
-    <section className="pb-8">
+    <section className="pb-8 max-w-2xl">
       <Toaster />
 
       <div className="mb-4">

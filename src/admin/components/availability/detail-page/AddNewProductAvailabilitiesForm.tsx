@@ -25,7 +25,7 @@ const AddNewProductAvailabilitiesForm = ({
   }, [data]);
 
   return (
-    <Container className="max-w-2xl mt-8">
+    <Container className="mt-8">
       <Heading level="h2" className="mb-4">
         Ajoutez de nouvelles disponibilités de produits
       </Heading>
