@@ -4,6 +4,7 @@ import { CreateAvailabilityDto } from "@/admin-api/availabilities/dtos/create-av
 import AvailabilityProductService from "./availability-product";
 import { GetAvailabilitiesDto } from "@/api/admin/availabilities/dtos/get-availabilities.dtos";
 import {
+  EntityManager,
   FindManyOptions,
   FindOneOptions,
   FindOptionsRelations,
@@ -154,9 +155,12 @@ class AvailabilityService extends TransactionBaseService {
     return availability;
   }
 
-  async delete(id: string): Promise<OperationResult> {
+  async handleAvailabilityDeletion(
+    id: string,
+    em: EntityManager,
+  ): Promise<OperationResult> {
     try {
-      const availabilityRepo = this.activeManager_.getRepository(Availability);
+      const availabilityRepo = em.getRepository(Availability);
       const availability = await availabilityRepo.findOneOrFail({
         where: { id },
         relations: { orders: true, carts: true },
@@ -181,6 +185,10 @@ class AvailabilityService extends TransactionBaseService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async delete(id: string): Promise<OperationResult> {
+    return this.atomicPhase_((em) => this.handleAvailabilityDeletion(id, em));
   }
 }
 
