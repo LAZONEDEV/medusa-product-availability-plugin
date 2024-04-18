@@ -159,13 +159,19 @@ class AvailabilityService extends TransactionBaseService {
       const availabilityRepo = this.activeManager_.getRepository(Availability);
       const availability = await availabilityRepo.findOneOrFail({
         where: { id },
-        relations: { orders: true },
+        relations: { orders: true, carts: true },
       });
 
       if (availability.orders.length > 0) {
         throw new UnprocessableEntityError(
           ValidationErrorMessage.availabilityHasCart,
         );
+      }
+
+      // untie relations with carts
+      if (availability.carts.length) {
+        availability.carts = [];
+        await availabilityRepo.save(availability);
       }
 
       const result = await availabilityRepo.delete({ id });
