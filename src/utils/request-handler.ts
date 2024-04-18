@@ -6,6 +6,9 @@ import ValidationError from "@/error/ValidationError";
 import { ApiErrorResponseType } from "@/types/api";
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import ErrorWithCode from "@/error/ErrorWithCode";
+import { QueryFailedError } from "typeorm";
+import { requestErrorLogger } from "./request-error-logger";
+import { isProdEnv } from "@/constants/env-mode";
 
 type RequestHandlerType = (
   req: MedusaRequest,
@@ -32,16 +35,22 @@ const getErrorStatusCode = (error: unknown): number => {
   return 500;
 };
 
+const getErrorMessage = (error: unknown): string => {
+  // do not display db errors in production
+  if (error instanceof QueryFailedError && isProdEnv) {
+    return "Internal Server Error";
+  }
+
+  return error instanceof Error ? error.message : String(error);
+};
+
 export const createRequestHandler = (handler: RequestHandlerType) => {
   return async (req: MedusaRequest, res: MedusaResponse) => {
     try {
       const result = await handler(req, res);
       res.json({ data: result });
     } catch (error) {
-      console.error(error);
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-
+      const errorMessage = getErrorMessage(error);
       const errorStatusCode = getErrorStatusCode(error);
 
       const response: ApiErrorResponseType = {
@@ -56,6 +65,9 @@ export const createRequestHandler = (handler: RequestHandlerType) => {
       if (error instanceof CartValidationError) {
         response.payload = error.payload;
       }
+
+      const logger = req.scope.resolve("logger");
+      requestErrorLogger(error, logger);
 
       res.status(errorStatusCode).json(response);
     }
