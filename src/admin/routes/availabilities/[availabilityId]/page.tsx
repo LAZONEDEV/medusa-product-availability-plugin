@@ -6,6 +6,7 @@ import AvailabilityDetailTitle from "../../../components/availability/detail-pag
 import AvailabilityDetailsProductsList from "../../../components/availability/detail-page/AvailabilityDetailsProductsList";
 import AddNewProductAvailabilitiesForm from "../../../components/availability/detail-page/AddNewProductAvailabilitiesForm";
 import DeleteAvailabilityPrompt from "../../../components/availability/detail-page/DeleteAvailabilityPrompt";
+import AvailabilityStatusUpdater from "../../../components/availability/detail-page/AvailabilityStatusUpdater";
 
 const Page = () => {
   const { data, error, isLoading, refetch, availabilityId } =
@@ -20,13 +21,20 @@ const Page = () => {
   }
 
   return (
-    <section className="pb-8">
+    <section className="pb-8 max-w-2xl">
       <Toaster />
 
       <div className="mb-4">
-        <AvailabilityDetailTitle date={data.date} />
+        <AvailabilityDetailTitle date={data.date} status={data.status} />
 
-        <DeleteAvailabilityPrompt availabilityId={availabilityId} />
+        <div className="flex items-center justify-between">
+          <AvailabilityStatusUpdater
+            availabilityId={availabilityId}
+            status={data.status}
+          />
+
+          <DeleteAvailabilityPrompt availabilityId={availabilityId} />
+        </div>
       </div>
 
       <AvailabilityDetailsProductsList

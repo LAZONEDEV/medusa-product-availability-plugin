@@ -1,6 +1,10 @@
 import { APIResponse, OperationResult } from "@/types/api";
 import medusaApiRoutes from "../constants/apiRoutes";
-import { Availability, CreateAvailabilityDto } from "../types/api";
+import {
+  Availability,
+  AvailabilityStatus,
+  CreateAvailabilityDto,
+} from "../types/api";
 import medusaHttpClient from "../utils/medusaHttpClient";
 
 class AvailabilityApiService {
@@ -38,6 +42,24 @@ class AvailabilityApiService {
       >(`${AvailabilityApiService.path}/${id}`);
 
       return availability!.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async changeState(
+    availabilityId: string,
+    status: AvailabilityStatus,
+  ): Promise<OperationResult> {
+    try {
+      const result = await medusaHttpClient.patch<APIResponse<OperationResult>>(
+        `${AvailabilityApiService.path}/${availabilityId}/change-status`,
+        {
+          status: status,
+        },
+      );
+
+      return result!.data;
     } catch (error) {
       throw error;
     }
