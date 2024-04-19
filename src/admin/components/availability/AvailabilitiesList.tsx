@@ -1,13 +1,13 @@
-import { Table, StatusBadge } from "@medusajs/ui";
+import { Table } from "@medusajs/ui";
 import AvailabilityProductsList from "./AvailabilityProductsList";
 import AvailabilitiesSkeleton from "./AvailabilitiesSkeleton";
 import { useGetAvailabilities } from "../../hooks/availabilities/get-availabilities";
-import { AvailabilityStatus } from "../../types/api";
 import { Pencil } from "@medusajs/icons";
 import ErrorView from "./ErrorView";
 import { Link } from "react-router-dom";
 import EmptyList from "./EmptyList";
 import { toLocaleDate } from "../../utils/date";
+import AvailabilityStatusBadge from "./utils/AvailabilityStatusBadge";
 
 export function AvailabilitiesList() {
   const {
@@ -65,15 +65,7 @@ export function AvailabilitiesList() {
               </Table.Cell>
 
               <Table.Cell>
-                <StatusBadge
-                  color={
-                    availability.status === AvailabilityStatus.Active
-                      ? "green"
-                      : "red"
-                  }
-                >
-                  {availability.status}
-                </StatusBadge>
+                <AvailabilityStatusBadge status={availability.status} />
               </Table.Cell>
 
               <Table.Cell>
