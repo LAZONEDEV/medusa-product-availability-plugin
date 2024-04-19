@@ -46,6 +46,25 @@ class HTTPClient {
     }
   }
 
+  private async requestWithBody<T = any, P = any>(
+    method: string,
+    url: string,
+    data: P,
+    { headers, ...reqOptions }: RequestInit = {},
+  ): Promise<T | undefined> {
+    const options: RequestInit = {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      ...reqOptions,
+      body: JSON.stringify(data),
+    };
+
+    return this.request<T>(url, options);
+  }
+
   async get<T = any>(
     url: string,
     reqOptions: RequestInit = {},
@@ -61,37 +80,25 @@ class HTTPClient {
   async post<T = any, P = any>(
     url: string,
     data: P,
-    { headers, ...reqOptions }: RequestInit = {},
+    req: RequestInit = {},
   ): Promise<T | undefined> {
-    const options: RequestInit = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
-      ...reqOptions,
-      body: JSON.stringify(data),
-    };
-
-    return this.request<T>(url, options);
+    return this.requestWithBody("POST", url, data, req);
   }
 
   async put<T = any, P = any>(
     url: string,
     data: P,
-    { headers, ...reqOptions }: RequestInit = {},
+    req: RequestInit = {},
   ): Promise<T | undefined> {
-    const options: RequestInit = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
-      ...reqOptions,
-      body: JSON.stringify(data),
-    };
+    return this.requestWithBody("PUT", url, data, req);
+  }
 
-    return this.request<T>(url, options);
+  async patch<T = any, P = any>(
+    url: string,
+    data: P,
+    req: RequestInit = {},
+  ): Promise<T | undefined> {
+    return this.requestWithBody("PATCH", url, data, req);
   }
 
   async delete<T = any>(

@@ -2,12 +2,18 @@ import { ArrowLeftMini } from "@medusajs/icons";
 import { toLocaleDate } from "../../../utils/date";
 import { Heading, Button } from "@medusajs/ui";
 import { useNavigate } from "react-router-dom";
+import { AvailabilityStatus } from "@/admin/types/api";
+import AvailabilityStatusBadge from "../utils/AvailabilityStatusBadge";
 
 interface AvailabilityDetailTitleProps {
   date: string | Date;
+  status: AvailabilityStatus;
 }
 
-const AvailabilityDetailTitle = ({ date }: AvailabilityDetailTitleProps) => {
+const AvailabilityDetailTitle = ({
+  date,
+  status,
+}: AvailabilityDetailTitleProps) => {
   const navigate = useNavigate();
   const formattedDate = toLocaleDate(date);
 
@@ -25,7 +31,11 @@ const AvailabilityDetailTitle = ({ date }: AvailabilityDetailTitleProps) => {
         <ArrowLeftMini /> Retour
       </Button>
 
-      <Heading>Détails de la disponibilité du : {formattedDate}</Heading>
+      <div className="flex items-center gap-x-2 justify-between">
+        <Heading>Détails de la disponibilité du : {formattedDate}</Heading>
+
+        <AvailabilityStatusBadge status={status} />
+      </div>
     </>
   );
 };
