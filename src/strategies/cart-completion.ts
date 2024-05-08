@@ -4,7 +4,6 @@ import CartService from "@/services/cart";
 import { CartCompletionResponse, IdempotencyKey } from "@medusajs/medusa";
 import CoreCartCompletionStrategy from "@medusajs/medusa/dist/strategies/cart-completion";
 import { RequestContext } from "@medusajs/medusa/dist/types/request";
-import { EntityManager } from "typeorm";
 
 class CartCompletionStrategy extends CoreCartCompletionStrategy {
   constructor() {
@@ -15,17 +14,18 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
     cartId: string,
     ikey: IdempotencyKey,
     context: RequestContext,
-    manager: EntityManager,
   ): Promise<CartCompletionResponse> {
     try {
-      const { cart } = await (this.cartService_ as CartService)
-        .withTransaction(manager)
-        .verifyIfMatchesAvailability(cartId);
+      const { cart } = await (
+        this.cartService_ as CartService
+      ).verifyIfMatchesAvailability(cartId);
 
       // call default cart completion strategy
-      const { response_body, response_code } = await super
-        .withTransaction(manager)
-        .complete(cartId, ikey, context);
+      const { response_body, response_code } = await super.complete(
+        cartId,
+        ikey,
+        context,
+      );
 
       const orderIsCreated = (response_body.data as Order)?.object === "order";
 
@@ -66,9 +66,7 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
     ikey: IdempotencyKey,
     context: RequestContext,
   ): Promise<CartCompletionResponse> {
-    return this.atomicPhase_(async (manager) =>
-      this.handleComplete(cartId, ikey, context, manager),
-    );
+    return this.handleComplete(cartId, ikey, context);
   }
 }
 
