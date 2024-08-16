@@ -1,5 +1,6 @@
 import CartValidationError from "@/error/CartValidationFailure";
 import { Order } from "@/models/order";
+import { AvailabilityProduct } from "@/models/product-availability";
 import CartService from "@/services/cart";
 import { CartCompletionResponse, IdempotencyKey } from "@medusajs/medusa";
 import CoreCartCompletionStrategy from "@medusajs/medusa/dist/strategies/cart-completion";
@@ -22,15 +23,35 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
         .withTransaction(manager)
         .verifyIfMatchesAvailability(cartId);
 
+      const availabilityProductRepo =
+        manager.getRepository(AvailabilityProduct);
+
+      // add reservations
+      await Promise.allSettled(
+        cart.items.map((item) => {
+          return availabilityProductRepo.increment(
+            {
+              product: item.variant.product.id,
+              availability: cart.availability.id,
+            },
+            "orderedQuantity",
+            item.quantity,
+          );
+        }),
+      );
+
       // call default cart completion strategy
-      const { response_body, response_code } = await super
-        .withTransaction(manager)
-        .complete(cartId, ikey, context);
+      const { response_body, response_code } = await super.complete(
+        cartId,
+        ikey,
+        context,
+      );
 
-      const orderIsCreated = (response_body.data as Order)?.object === "order";
+      const orderSuccessfullyCreated =
+        (response_body.data as Order)?.object === "order";
 
-      if (orderIsCreated) {
-        const orderRepo = this.activeManager_.getRepository(Order);
+      if (orderSuccessfullyCreated) {
+        const orderRepo = manager.getRepository(Order);
 
         const order = response_body.data as Order;
         // set availability to order
@@ -41,6 +62,19 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
               id: cart.availability.id,
             },
           },
+        );
+      } else {
+        // delete reservations
+        await Promise.allSettled(
+          cart.items.map((item) => {
+            return availabilityProductRepo.decrement(
+              {
+                product: { id: item.variant.product.id },
+              },
+              "orderedQuantity",
+              item.quantity,
+            );
+          }),
         );
       }
 

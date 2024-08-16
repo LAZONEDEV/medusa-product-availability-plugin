@@ -6,10 +6,8 @@ import { ValidationErrorMessage } from "@/constants/validation-error-message";
 import { AvailabilityStatus } from "@/enums";
 import CartValidationError from "@/error/CartValidationFailure";
 import { Availability } from "@/models/availability";
-import AvailabilityProductRepository from "@/repositories/product-availability";
 import { OperationResult } from "@/types/api";
-import { CartService as MedusaCartService, Order } from "@medusajs/medusa";
-import { EntityManager } from "typeorm";
+import { CartService as MedusaCartService } from "@medusajs/medusa";
 
 class CartService extends MedusaCartService {
   async setAvailability(
@@ -31,16 +29,8 @@ class CartService extends MedusaCartService {
     }
   }
 
-  private async handleAvailabilityMatchesVerification(
-    cartId: string,
-    entityManager: EntityManager,
-  ) {
+  private async handleAvailabilityMatchesVerification(cartId: string) {
     try {
-      const availabilityProdRepo = entityManager.withRepository(
-        AvailabilityProductRepository,
-      );
-      const orderRepo = entityManager.getRepository(Order);
-
       const cart = await this.retrieve(cartId, {
         relations: [
           "items.variant.product",
@@ -97,12 +87,10 @@ class CartService extends MedusaCartService {
           continue;
         }
 
-        const placedOrder = await availabilityProdRepo.getPlacedOrderQuantity(
-          productAvailability.id,
-          orderRepo,
-        );
+        const placedOrdersCount = productAvailability.orderedQuantity;
 
-        const availableQuantity = productAvailability.quantity - placedOrder;
+        const availableQuantity =
+          productAvailability.quantity - placedOrdersCount;
 
         if (availableQuantity === 0) {
           const errorMessage =
@@ -148,9 +136,7 @@ class CartService extends MedusaCartService {
   }
 
   async verifyIfMatchesAvailability(cartId: string) {
-    return this.atomicPhase_(async (entityManager) =>
-      this.handleAvailabilityMatchesVerification(cartId, entityManager),
-    );
+    return this.handleAvailabilityMatchesVerification(cartId);
   }
 }
 
