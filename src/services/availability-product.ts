@@ -1,4 +1,4 @@
-import { Order, TransactionBaseService } from "@medusajs/medusa";
+import { TransactionBaseService } from "@medusajs/medusa";
 import type { CreateAvailabilityProductDto } from "@/admin-api/availabilities/dtos/create-availability.dtos";
 import { AvailabilityProduct } from "@/models/product-availability";
 import { EntityManager, QueryFailedError } from "typeorm";
@@ -7,7 +7,6 @@ import BadRequestError from "@/error/BadRequestError";
 import { ValidationErrorMessage } from "@/constants/validation-error-message";
 import UpdateProductAvailabilityDto from "@/api/admin/product-availabilities/dtos/update-product-availability.dtos";
 import NotFoundError from "@/error/NotFoundError";
-import AvailabilityProductRepository from "@/repositories/product-availability";
 import UnprocessableEntityError from "@/error/UnprocessableEntityError";
 import { CreateProductsAvailabilitiesDto } from "@/api/admin/product-availabilities/dtos/create-product-availabilities.dtos";
 import {
@@ -53,9 +52,8 @@ class AvailabilityProductService extends TransactionBaseService {
 
   async getAvailabilityProducts(availabilityId: string) {
     try {
-      const availabilityProdRepo = this.activeManager_.withRepository(
-        AvailabilityProductRepository,
-      );
+      const availabilityProdRepo =
+        this.activeManager_.getRepository(AvailabilityProduct);
 
       return availabilityProdRepo.find({
         relations: {
@@ -87,18 +85,12 @@ class AvailabilityProductService extends TransactionBaseService {
   }
 
   async delete(id: string): Promise<OperationResult> {
-    const availabilityProdRepo = this.activeManager_.withRepository(
-      AvailabilityProductRepository,
-    );
+    const availabilityProdRepo =
+      this.activeManager_.getRepository(AvailabilityProduct);
 
-    const orderRepository = this.activeManager_.getRepository(Order);
+    const record = await availabilityProdRepo.findOneByOrFail({ id });
 
-    const passedCommand = await availabilityProdRepo.getPlacedOrderQuantity(
-      id,
-      orderRepository,
-    );
-
-    if (passedCommand > 0) {
+    if (record?.orderedQuantity > 0) {
       throw new UnprocessableEntityError(
         ValidationErrorMessage.cantDeleteProductAvailabilityThatHaveOrder,
       );
@@ -115,9 +107,8 @@ class AvailabilityProductService extends TransactionBaseService {
     id: string,
     data: UpdateProductAvailabilityDto,
   ): Promise<OperationResult> {
-    const availabilityProdRepo = this.activeManager_.withRepository(
-      AvailabilityProductRepository,
-    );
+    const availabilityProdRepo =
+      this.activeManager_.getRepository(AvailabilityProduct);
 
     const productAvailability = await availabilityProdRepo.findOne({
       where: { id },
@@ -139,17 +130,12 @@ class AvailabilityProductService extends TransactionBaseService {
       );
     }
 
-    const orderRepository = this.activeManager_.getRepository(Order);
-
     // when quantity is `null` that means quantity is unlimited
     if (data.quantity !== null) {
       // ensure that the new quantity is greater or equal than placed order quantities
-      const passedCommand = await availabilityProdRepo.getPlacedOrderQuantity(
-        id,
-        orderRepository,
-      );
+      const placedOrdersCount = productAvailability.orderedQuantity;
 
-      if (data.quantity < passedCommand) {
+      if (data.quantity < placedOrdersCount) {
         throw new UnprocessableEntityError(
           ValidationErrorMessage.newAvailableQuantityNotBeLessThanPlacedQuantity,
         );
@@ -170,9 +156,8 @@ class AvailabilityProductService extends TransactionBaseService {
     productId: string,
     availabilityId: string,
   ): Promise<CheckProductAvailableOnAvailabilityResult> {
-    const availabilityProdRepo = this.activeManager_.withRepository(
-      AvailabilityProductRepository,
-    );
+    const availabilityProdRepo =
+      this.activeManager_.getRepository(AvailabilityProduct);
 
     const exists = await availabilityProdRepo.existsBy({
       availability: {
