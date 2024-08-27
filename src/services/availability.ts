@@ -21,17 +21,23 @@ import { GetStoreAvailabilitiesDto } from "@/api/store/availabilities/dtos/get-s
 import UnprocessableEntityError from "@/error/UnprocessableEntityError";
 import { OperationResult } from "@/types/api";
 import type { ChangeAvailabilityStatusDto } from "@/api/admin/availabilities/[id]/change-status/dtos/change-status.dtos";
+import { Order } from "@/models/order";
+import { AvailabilityProduct } from "@/models/product-availability";
+import { Logger } from "@medusajs/medusa";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
+  logger: Logger;
 };
 
 class AvailabilityService extends TransactionBaseService {
   protected availabilityProductService: AvailabilityProductService;
+  protected logger: Logger;
 
   constructor(config: InjectedDependencies) {
     super(config);
     this.availabilityProductService = config.availabilityProductService;
+    this.logger = config.logger;
   }
 
   private computeOffsetAndPage = (limit = 10, page = 0) => {
@@ -206,6 +212,46 @@ class AvailabilityService extends TransactionBaseService {
     return {
       success: !!updateResult.affected,
     };
+  }
+
+  private async handleTheRollbackOfPlacedQuantities(
+    em: EntityManager,
+    orderID: string,
+  ) {
+    const orderRepo = em.getRepository(Order);
+    const availabilityProdRepo = em.getRepository(AvailabilityProduct);
+
+    try {
+      const order = await orderRepo.findOneOrFail({
+        where: { id: orderID },
+        relations: ["items.variant.product", "availability"],
+      });
+
+      const decrementingPromises = order.items.map((item) => {
+        return availabilityProdRepo.decrement(
+          {
+            product: {
+              id: item.variant.product.id,
+            },
+            availability: {
+              id: order.availability.id,
+            },
+          },
+          "orderedQuantity",
+          item.quantity,
+        );
+      });
+
+      await Promise.allSettled(decrementingPromises);
+    } catch (error) {
+      this.logger.error("placed quantity rollback process failed", error);
+    }
+  }
+
+  async rollbackPlacedQuantities(orderID: string) {
+    this.atomicPhase_(async (em) => {
+      return this.handleTheRollbackOfPlacedQuantities(em, orderID);
+    });
   }
 }
 
