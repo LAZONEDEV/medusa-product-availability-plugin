@@ -1,6 +1,6 @@
 {
   "name": "medusa-product-availability-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Plugin for Scheduled Product Availability Management",
   "license": "MIT",
   "repository": {
