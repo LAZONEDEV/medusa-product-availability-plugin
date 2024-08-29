@@ -19,7 +19,7 @@ switch (process.env.NODE_ENV) {
 
 try {
   dotenv.config({ path: process.cwd() + "/" + ENV_FILE_NAME });
-} catch (e) {}
+} catch (e) { }
 
 // CORS when consuming Medusa from admin
 const ADMIN_CORS =
@@ -32,20 +32,7 @@ const DATABASE_URL =
   process.env.DATABASE_URL ||
   `${process.env.DATABASE_TYPE}://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
 
-const plugins = [
-  `medusa-fulfillment-manual`,
-  `medusa-payment-manual`,
-  {
-    resolve: "@medusajs/admin",
-    /** @type {import('@medusajs/admin').PluginOptions} */
-    options: {
-      autoRebuild: true,
-      develop: {
-        open: process.env.OPEN_BROWSER !== "false",
-      },
-    },
-  },
-];
+const plugins = [];
 
 const modules = {};
 
