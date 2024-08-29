@@ -18,6 +18,29 @@
     "medusa-product-availability-plugin",
     "medusa-product-storefront-plugin"
   ],
+  "author":  {
+      "name": "LA ZONE",
+      "url": "https://www.la-zone.io",
+      "email": "admin@la-zone.io"
+    },
+    "contributors": [
+    {
+      "name": "Lewis ALLEDJI",
+      "url": "https://github.com/LewisYann"
+    },
+    {
+      "name": "Juste BOCOVO",
+      "url": "https://github.com/BOCOVO"
+    },
+    {
+      "name": "Valentino Houessou",
+      "url": "https://github.com/Valentino-Houessou"
+    },
+    {
+      "name": "Teneng Clifford",
+      "url": "https://github.com/cliffordten"
+    }
+  ],
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/rimraf dist",
     "build": "cross-env npm run clean && npm run build:server && npm run build:admin:bundle",
