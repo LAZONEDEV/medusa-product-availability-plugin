@@ -1,15 +1,22 @@
 {
-  "name": "medusa-customizable-product-availability",
+  "name": "medusa-product-availability-plugin",
   "version": "0.0.3",
-  "description": "Plugin for product availability management",
+  "description": "Plugin for Scheduled Product Availability Management",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LAZONEDEV/medusa-product-availability-plugin"
+  },
   "keywords": [
     "sqlite",
     "postgres",
     "typescript",
     "ecommerce",
     "headless",
-    "medusa"
+    "medusa",
+    "medusa-plugin",
+    "medusa-product-availability-plugin",
+    "medusa-product-storefront-plugin"
   ],
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/rimraf dist",
