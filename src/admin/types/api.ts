@@ -35,7 +35,7 @@ export interface CreateAvailabilityProductItem {
 }
 
 export interface CreateAvailabilityDto {
-  date: Date;
+  date: Date | string;
   availabilityProducts: CreateAvailabilityProductItem[];
 }
 
