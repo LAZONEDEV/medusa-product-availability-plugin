@@ -3,11 +3,11 @@ import { Container, Heading } from "@medusajs/ui";
 import { EyeMini } from "@medusajs/icons";
 import { Link } from "react-router-dom";
 
-import { toLocaleDate } from "../../utils/date";
+import { formatAvailabilityDate } from "../../utils/date";
 import adminRoutes from "../../constants/adminRoutes";
 
 const AvailabilityDetailWidget = ({ order }: OrderDetailsWidgetProps) => {
-  const formattedDate = toLocaleDate(order.availability.date);
+  const formattedDate = formatAvailabilityDate(order.availability.date);
   const detailPageURL = `${adminRoutes.availabilities}/${order.availability.id}`;
 
   return (
