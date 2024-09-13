@@ -7,6 +7,7 @@ import { AvailabilityStatus } from "@/enums";
 import CartValidationError from "@/error/CartValidationFailure";
 import { Availability } from "@/models/availability";
 import { OperationResult } from "@/types/api";
+import { getStoreTimeZoneCurrentDateStartOfDay } from "@/utils/date/getStartOfDay";
 import { CartService as MedusaCartService } from "@medusajs/medusa";
 
 class CartService extends MedusaCartService {
@@ -53,7 +54,9 @@ class CartService extends MedusaCartService {
       }
 
       // checking expiration
-      if (new Date(availability.date) < new Date()) {
+      if (
+        new Date(availability.date) < getStoreTimeZoneCurrentDateStartOfDay()
+      ) {
         throw new CartValidationError(
           cartCompletionErrorsInfo.AVAILABILITY_EXPIRED!,
         );

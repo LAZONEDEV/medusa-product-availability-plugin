@@ -8,7 +8,6 @@ import {
   FindManyOptions,
   FindOneOptions,
   FindOptionsRelations,
-  MoreThan,
   QueryFailedError,
 } from "typeorm";
 import { GetAvailabilitiesResponseDto } from "@/types/availability";
@@ -24,6 +23,7 @@ import type { ChangeAvailabilityStatusDto } from "@/api/admin/availabilities/[id
 import { Order } from "@/models/order";
 import { AvailabilityProduct } from "@/models/product-availability";
 import { Logger } from "@medusajs/medusa";
+import { ExcludeExpiredAvailabilitiesOperator } from "@/utils/query-operators/exclude-expired-availability-query-operator";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
@@ -82,7 +82,7 @@ class AvailabilityService extends TransactionBaseService {
 
     // expired availabilities are those whose dates have passed.
     if (!query.includeExpired) {
-      whereClose.date = MoreThan(new Date());
+      whereClose.date = ExcludeExpiredAvailabilitiesOperator();
     }
 
     return this.getWhere(query, {
@@ -95,7 +95,7 @@ class AvailabilityService extends TransactionBaseService {
     query: GetStoreAvailabilitiesDto,
   ): Promise<GetAvailabilitiesResponseDto> {
     const whereClose: FindOneOptions<Availability>["where"] = {
-      date: MoreThan(new Date()),
+      date: ExcludeExpiredAvailabilitiesOperator(),
     };
 
     if (query.forProduct) {
