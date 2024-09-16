@@ -46,6 +46,7 @@
     - [APIOperationResponseType](#apioperationresponsetype)
     - [Availability](#availability)
     - [Cart validation error reference](#cart-validation-error-reference)
+  - [Env variables](#env-variables)
 - [Start the project for contribution](#start-the-project-for-contribution)
   - [Create environment file](#create-environment-file)
   - [Setup medusa](#setup-medusa)
@@ -278,6 +279,8 @@ export interface CheckProductAvailableOnAvailabilityResult {
 }
 ```
 
+</details>
+
 #### GetAvailabilityProductAvailabilitiesResponseType
 
 <details>
@@ -384,6 +387,12 @@ type Payload = {
   productTitle: string; // the title of the product
 };
 ```
+
+### Env variables
+
+> | name                               | value type                                                               | description                                                   |
+> | ---------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- |
+> | `AVAILABILITY_VALIDATION_TIMEZONE` | [Timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) | The timezone that will be used to validate availability date. |
 
 ## Start the project for contribution
 
