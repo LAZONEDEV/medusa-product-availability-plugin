@@ -1,5 +1,5 @@
 import { ArrowLeftMini } from "@medusajs/icons";
-import { toLocaleDate } from "../../../utils/date";
+import { formatAvailabilityDate } from "../../../utils/date";
 import { Heading, Button } from "@medusajs/ui";
 import { useNavigate } from "react-router-dom";
 import { AvailabilityStatus } from "@/admin/types/api";
@@ -15,7 +15,7 @@ const AvailabilityDetailTitle = ({
   status,
 }: AvailabilityDetailTitleProps) => {
   const navigate = useNavigate();
-  const formattedDate = toLocaleDate(date);
+  const formattedDate = formatAvailabilityDate(date);
 
   const goBack = () => {
     navigate(-1);

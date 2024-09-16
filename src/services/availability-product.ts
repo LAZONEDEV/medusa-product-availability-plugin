@@ -13,6 +13,7 @@ import {
   CheckProductAvailableOnAvailabilityResult,
   OperationResult,
 } from "@/types/api";
+import { getStoreTimeZoneCurrentDateStartOfDay } from "@/utils/date/getStartOfDay";
 
 class AvailabilityProductService extends TransactionBaseService {
   async createByEntityManager(
@@ -124,7 +125,10 @@ class AvailabilityProductService extends TransactionBaseService {
     }
 
     // prevent availability updates for products availability whose parent availability has expired
-    if (new Date(productAvailability.availability.date) < new Date()) {
+    if (
+      new Date(productAvailability.availability.date) <
+      getStoreTimeZoneCurrentDateStartOfDay()
+    ) {
       throw new UnprocessableEntityError(
         ValidationErrorMessage.availabilityAlreadyExpired,
       );

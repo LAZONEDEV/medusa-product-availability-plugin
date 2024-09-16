@@ -6,7 +6,7 @@ import { Pencil } from "@medusajs/icons";
 import ErrorView from "./ErrorView";
 import { Link } from "react-router-dom";
 import EmptyList from "./EmptyList";
-import { toLocaleDate } from "../../utils/date";
+import { formatAvailabilityDate } from "../../utils/date";
 import AvailabilityStatusBadge from "./utils/AvailabilityStatusBadge";
 
 export function AvailabilitiesList() {
@@ -49,7 +49,7 @@ export function AvailabilitiesList() {
 
       <Table.Body>
         {availabilities?.map((availability) => {
-          const formattedDate = toLocaleDate(availability.date);
+          const formattedDate = formatAvailabilityDate(availability.date);
 
           return (
             <Table.Row

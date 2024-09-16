@@ -17,11 +17,20 @@ export const useCreateAvailabilityMutation = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (
-    values: CreateAvailabilityDto,
-    formikHelpers: FormikHelpers<CreateAvailabilityDto>,
+    { date, availabilityProducts }: CreateAvailabilityDto,
+    formikHelpers: FormikHelpers<CreateAvailabilityDto>
   ) => {
     try {
-      await AvailabilityApiService.create(values);
+      // transform the date into this format : YYYY-MM-DD
+      // to ensure that we don't UTC to the backend
+      const availabilityDate = new Date(date);
+      const month = availabilityDate.getMonth() + 1;
+      const formattedDate = `${availabilityDate.getFullYear()}-${month}-${availabilityDate.getDate()}`;
+
+      await AvailabilityApiService.create({
+        availabilityProducts,
+        date: formattedDate,
+      });
 
       toast({
         title: "Disponibilité créée",
