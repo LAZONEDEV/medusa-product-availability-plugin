@@ -17,9 +17,8 @@ module.exports = {
   testEnvironment: "node",
   moduleFileExtensions: ["js", "ts", "json"],
   modulePathIgnorePatterns: ["dist/"],
+  testTimeout: 10_000, // Medusa takes a long time to launch
 };
-
-console.log(process.env);
 
 if (process.env.TEST_TYPE === "integration:http") {
   module.exports.testMatch = ["**/integration-tests/http/*.spec.[jt]s"];
