@@ -1,7 +1,8 @@
 /dist
 .env
-!.env.template
 .env.*
+!.env.template
+!.env.*.template
 .DS_Store
 /uploads
 /node_modules
