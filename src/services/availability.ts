@@ -109,7 +109,7 @@ class AvailabilityService extends TransactionBaseService {
     return this.getWhere(query, { where: whereClose });
   }
 
-  async create(data: CreateAvailabilityDto) {
+  async create(data: CreateAvailabilityDto): Promise<Availability> {
     return this.atomicPhase_(async (entityManager) => {
       try {
         const availabilityRepo = entityManager.getRepository(Availability);
