@@ -25,8 +25,7 @@ export class CreateAvailabilityDto {
   @IsNotPastDate({
     message: ValidationErrorMessage.canNotCreateAvailabilityForPast,
   })
-  @Transform(({ value }) => new Date(value).toISOString())
-  @IsDateString()
+  @IsDateString({ strict: false })
   date: string;
 
   @IsArray()

@@ -24,6 +24,7 @@ import { Order } from "@/models/order";
 import { AvailabilityProduct } from "@/models/product-availability";
 import { Logger } from "@medusajs/medusa";
 import { ExcludeExpiredAvailabilitiesOperator } from "@/utils/query-operators/exclude-expired-availability-query-operator";
+import { AvailabilityStatus } from "@/enums";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
@@ -96,6 +97,7 @@ class AvailabilityService extends TransactionBaseService {
   ): Promise<GetAvailabilitiesResponseDto> {
     const whereClose: FindOneOptions<Availability>["where"] = {
       date: ExcludeExpiredAvailabilitiesOperator(),
+      status: AvailabilityStatus.Active,
     };
 
     if (query.forProduct) {

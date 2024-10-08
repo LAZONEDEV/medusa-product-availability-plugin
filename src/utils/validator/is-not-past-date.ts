@@ -1,4 +1,6 @@
+import { AVAILABILITY_VALIDATION_TIMEZONE } from "@/constants/envs";
 import { registerDecorator, ValidationOptions } from "class-validator";
+import dayjs from "../date/dayjs";
 
 export function IsNotPastDate(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
@@ -9,9 +11,10 @@ export function IsNotPastDate(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: string | Date) {
-          const relatedDate = new Date(value);
-          const now = new Date();
-          return relatedDate > now;
+          const current = dayjs().tz(AVAILABILITY_VALIDATION_TIMEZONE);
+          const relatedDate = dayjs.tz(value, AVAILABILITY_VALIDATION_TIMEZONE);
+
+          return !relatedDate.isBefore(current, "date");
         },
       },
     });
