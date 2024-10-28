@@ -5,6 +5,7 @@ import CartService from "@/services/cart";
 import { CartCompletionResponse, IdempotencyKey } from "@medusajs/medusa";
 import CoreCartCompletionStrategy from "@medusajs/medusa/dist/strategies/cart-completion";
 import { RequestContext } from "@medusajs/medusa/dist/types/request";
+import { promiseAll } from "@medusajs/utils";
 import { EntityManager } from "typeorm";
 
 class CartCompletionStrategy extends CoreCartCompletionStrategy {
@@ -27,7 +28,7 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
         manager.getRepository(AvailabilityProduct);
 
       // add reservations
-      await Promise.allSettled(
+      await promiseAll(
         cart.items.map((item) => {
           return availabilityProductRepo.increment(
             {
@@ -100,7 +101,7 @@ class CartCompletionStrategy extends CoreCartCompletionStrategy {
     ikey: IdempotencyKey,
     context: RequestContext,
   ): Promise<CartCompletionResponse> {
-    return this.atomicPhase_(async (manager) =>
+    return this.activeManager_.transaction(async (manager) =>
       this.handleComplete(cartId, ikey, context, manager),
     );
   }
