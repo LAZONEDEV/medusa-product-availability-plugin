@@ -9,7 +9,7 @@ export const changeAvailabilityStatus = createRequestHandler(
     try {
       const id = req.params.id;
       const payload = await validator(ChangeAvailabilityStatusDto, {
-        ...req.body,
+        ...(req.body as object),
         availabilityId: id,
       });
 
