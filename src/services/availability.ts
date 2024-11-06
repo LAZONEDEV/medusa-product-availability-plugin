@@ -25,6 +25,7 @@ import { AvailabilityProduct } from "@/models/product-availability";
 import { Logger } from "@medusajs/medusa";
 import { ExcludeExpiredAvailabilitiesOperator } from "@/utils/query-operators/exclude-expired-availability-query-operator";
 import { AvailabilityStatus } from "@/enums";
+import { computeOffsetAndPage } from "@/utils/computeOffsetAndPage";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
@@ -41,12 +42,6 @@ class AvailabilityService extends TransactionBaseService {
     this.logger = config.logger;
   }
 
-  private computeOffsetAndPage = (limit = 10, page = 0) => {
-    const skipOffset = Math.max(page * limit, 0);
-
-    return [limit, skipOffset] as const;
-  };
-
   private async getWhere(
     query: QueryPaginationDto,
     findOptions: Pick<
@@ -57,7 +52,7 @@ class AvailabilityService extends TransactionBaseService {
     try {
       const availabilityRepo = this.activeManager_.getRepository(Availability);
 
-      const [queryLimit, skipOffset] = this.computeOffsetAndPage(
+      const [queryLimit, skipOffset] = computeOffsetAndPage(
         query.limit,
         query.page,
       );
