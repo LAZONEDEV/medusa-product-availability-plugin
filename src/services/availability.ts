@@ -26,6 +26,7 @@ import { Logger } from "@medusajs/medusa";
 import { ExcludeExpiredAvailabilitiesOperator } from "@/utils/query-operators/exclude-expired-availability-query-operator";
 import { AvailabilityStatus } from "@/enums";
 import { computeOffsetAndPage } from "@/utils/computeOffsetAndPage";
+import { UpdateAvailabilityNotesDto } from "@/api/admin/availabilities/[id]/notes/dtos/notes-availability.dtos";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
@@ -209,6 +210,38 @@ class AvailabilityService extends TransactionBaseService {
     return {
       success: !!updateResult.affected,
     };
+  }
+
+  async updateNotes({
+    availabilityId,
+    withdrawNote,
+    deliveryNote,
+  }: UpdateAvailabilityNotesDto): Promise<OperationResult> {
+    const availabilityRepo = this.activeManager_.getRepository(Availability);
+
+    const updateResult = await availabilityRepo.update(
+      { id: availabilityId },
+      { withdrawNote, deliveryNote },
+    );
+
+    return {
+      success: !!updateResult.affected,
+    };
+  }
+
+  async getAvailabilitesNotes(id: string) {
+    const availabilityRepo = this.activeManager_.getRepository(Availability);
+
+    const availability = await availabilityRepo.findOne({
+      select: ["withdrawNote", "deliveryNote"],
+      where: { id },
+    });
+
+    if (!availability) {
+      throw new NotFoundError(ValidationErrorMessage.availabilityNotFound);
+    }
+
+    return availability;
   }
 
   private async handleTheRollbackOfPlacedQuantities(
