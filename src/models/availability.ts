@@ -30,6 +30,12 @@ export class Availability extends BaseEntity {
   @OneToMany(() => Cart, (cart) => cart.availability)
   carts: Cart[];
 
+  @Column({ type: "text", nullable: true })
+  withdrawNote?: string;
+
+  @Column({ type: "text", nullable: true })
+  deliveryNote?: string;
+
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
     this.id = generateEntityId(this.id, "availability");
