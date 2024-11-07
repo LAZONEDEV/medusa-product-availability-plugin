@@ -12,7 +12,7 @@ export enum AvailabilityStatus {
   Inactive = "inactive",
 }
 
-export interface Availability {
+export interface Availability extends AvailabilityNotes {
   id: string;
   created_at: Date;
   updated_at: Date;
@@ -32,6 +32,10 @@ export interface AvailabilityProduct {
 export interface CreateAvailabilityProductItem {
   productId: string;
   quantity: number | null;
+}
+export interface AvailabilityNotes {
+  withdrawNote?: string;
+  deliveryNote?: string;
 }
 
 export interface CreateAvailabilityDto {
