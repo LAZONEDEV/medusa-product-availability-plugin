@@ -17,7 +17,7 @@ export const useCreateAvailabilityMutation = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (
-    { date, availabilityProducts }: CreateAvailabilityDto,
+    { date, availabilityProducts, ...props }: CreateAvailabilityDto,
     formikHelpers: FormikHelpers<CreateAvailabilityDto>,
   ) => {
     try {
@@ -32,6 +32,7 @@ export const useCreateAvailabilityMutation = () => {
       await AvailabilityApiService.create({
         availabilityProducts,
         date: formattedDate,
+        ...props,
       });
 
       toast({
