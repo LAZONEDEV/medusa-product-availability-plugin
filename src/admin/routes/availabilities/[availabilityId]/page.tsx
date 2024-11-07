@@ -7,6 +7,7 @@ import AvailabilityDetailsProductsList from "../../../components/availability/de
 import AddNewProductAvailabilitiesForm from "../../../components/availability/detail-page/AddNewProductAvailabilitiesForm";
 import DeleteAvailabilityPrompt from "../../../components/availability/detail-page/DeleteAvailabilityPrompt";
 import AvailabilityStatusUpdater from "../../../components/availability/detail-page/AvailabilityStatusUpdater";
+import AvailabilityNotes from "../../../components/availability/detail-page/AvailabilityNotes";
 
 const Page = () => {
   const { data, error, isLoading, refetch, availabilityId } =
@@ -39,6 +40,11 @@ const Page = () => {
 
       <AvailabilityDetailsProductsList
         productAvailabilities={data.availabilityProducts}
+        availabilityId={availabilityId}
+      />
+      <AvailabilityNotes
+        withdrawNote={data.withdrawNote}
+        deliveryNote={data.deliveryNote}
         availabilityId={availabilityId}
       />
 
