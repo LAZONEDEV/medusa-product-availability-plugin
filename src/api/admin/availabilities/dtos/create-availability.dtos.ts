@@ -28,6 +28,14 @@ export class CreateAvailabilityDto {
   @IsDateString({ strict: false })
   date: string;
 
+  @IsOptional()
+  @IsString()
+  withdrawNote?: string;
+
+  @IsOptional()
+  @IsString()
+  deliveryNote?: string;
+
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
