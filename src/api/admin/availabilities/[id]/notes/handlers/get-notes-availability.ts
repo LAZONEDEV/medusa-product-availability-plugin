@@ -11,9 +11,10 @@ export const getAvailabilityNotes = createRequestHandler(
         "availabilityService",
       );
 
-      const availability = await availabilityService.getAvailabilitesNotes(id);
+      const availabilityNote =
+        await availabilityService.getAvailabilitesNotes(id);
 
-      return availability;
+      return availabilityNote;
     } catch (error) {
       throw error;
     }
