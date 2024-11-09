@@ -26,7 +26,7 @@ class AvailabilityApiService {
 
   static async updateNotes(availabilityId: string, notes: AvailabilityNotes) {
     try {
-      const result = await medusaHttpClient.patch<{ data: OperationResult }>(
+      const result = await medusaHttpClient.patch<APIResponse<OperationResult>>(
         `${AvailabilityApiService.path}/${availabilityId}/notes`,
         notes,
       );
