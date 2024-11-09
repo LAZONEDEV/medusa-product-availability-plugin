@@ -50,3 +50,13 @@ export interface UpdateProductAvailabilitiesDto {
 export interface UpdateAvailabilityProductItem {
   quantity: number;
 }
+
+export interface AvailabilitySetting {
+  id: string;
+  configName: string;
+  value: Record<string, string>;
+}
+
+export enum AvailabilitySettingName {
+  defaultWithdrawAndDeliveryInfo = "defaultWithdrawAndDeliveryInfo",
+}
