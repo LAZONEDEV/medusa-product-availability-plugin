@@ -2,6 +2,7 @@ import { APIResponse, OperationResult } from "@/types/api";
 import medusaApiRoutes from "../constants/apiRoutes";
 import {
   Availability,
+  AvailabilityNotes,
   AvailabilityStatus,
   CreateAvailabilityDto,
 } from "../types/api";
@@ -18,6 +19,18 @@ class AvailabilityApiService {
       );
 
       return availabilities;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateNotes(availabilityId: string, notes: AvailabilityNotes) {
+    try {
+      const result = await medusaHttpClient.patch<APIResponse<OperationResult>>(
+        `${AvailabilityApiService.path}/${availabilityId}/notes`,
+        notes,
+      );
+      return result;
     } catch (error) {
       throw error;
     }
