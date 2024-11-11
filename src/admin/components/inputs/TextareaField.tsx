@@ -1,6 +1,7 @@
 import React, { useId } from "react";
 import { useField } from "formik";
 import { Textarea, Label } from "@medusajs/ui";
+import FieldErrorMessage from "./ErrorMessage";
 
 interface TextareaFieldProps {
   name: string;
@@ -35,6 +36,7 @@ const TextareaField = ({
         className={`mt-1 ${className}`}
         placeholder={placeholder}
       />
+      <FieldErrorMessage name={name} label={label} />
     </div>
   );
 };
