@@ -29,7 +29,8 @@ const useAvailabilityNotes = (availabilityId: string) => {
   const onSuccess = () => {
     toast({
       title: "Mise à jour réussi",
-      description: "Les notes de la disponibilité sont mis à jour avec succès.",
+      description:
+        "Les configurations de la disponibilité sont mis à jour avec succès.",
       variant: "success",
     });
 
@@ -50,7 +51,8 @@ const useAvailabilityNotes = (availabilityId: string) => {
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       toast({
-        title: "Erreur lors de la mise à jour de la disponibilité",
+        title:
+          "Erreur lors de la mise à jour des configurations de la disponibilité",
         description: errorMessage,
         variant: "error",
       });

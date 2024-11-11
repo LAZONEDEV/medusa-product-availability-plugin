@@ -21,7 +21,7 @@ const useAvailabilitySetting = (settingName: AvailabilitySettingName) => {
     toast({
       title: "Échec de l'opération",
       description:
-        "Nous rencontrons des difficultés à mettre à jour les notes de la disponibilité.",
+        "Nous rencontrons des difficultés à mettre à jour les configurations de la disponibilité.",
       variant: "error",
     });
   };
@@ -29,7 +29,8 @@ const useAvailabilitySetting = (settingName: AvailabilitySettingName) => {
   const onSuccess = () => {
     toast({
       title: "Mise à jour réussi",
-      description: "Les notes de la disponibilité sont mis à jour avec succès.",
+      description:
+        "Les configurations de la disponibilité sont mis à jour avec succès.",
       variant: "success",
     });
 
@@ -50,7 +51,8 @@ const useAvailabilitySetting = (settingName: AvailabilitySettingName) => {
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       toast({
-        title: "Erreur lors de la mise à jour de la disponibilité",
+        title:
+          "Erreur lors de la mise à jour des configurations de la disponibilité",
         description: errorMessage,
         variant: "error",
       });

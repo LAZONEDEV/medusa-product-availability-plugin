@@ -42,7 +42,8 @@ const useUpdateProductAvailability = (id: string, availabilityId: string) => {
       const errorMessage = getErrorMessage(error);
 
       toast({
-        title: "Erreur lors de la mise à jour de la disponibilité",
+        title:
+          "Erreur lors de la mise à jour des configurations de la disponibilité.",
         description: errorMessage,
         variant: "error",
       });
