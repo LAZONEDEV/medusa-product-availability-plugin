@@ -25,6 +25,6 @@ export const ValidationErrorMessage = {
   cartAvailabilityIsInactive: "The availability set on the cart is inactive",
   cartAvailabilityExpired: "The availability set on the cart has expired",
   availabilityHasCart:
-    "It is not possible to delete an availability with ordered product.",
+    "It is not possible to delete an availability which has an order.",
   availabilitySettingNotFound: "Availability setting not found",
 };
