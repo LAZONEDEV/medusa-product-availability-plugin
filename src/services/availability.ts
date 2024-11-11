@@ -270,8 +270,6 @@ class AvailabilityService extends TransactionBaseService {
       if (!availability?.deliveryNote?.length) {
         availability.deliveryNote = defaultNotes?.value?.deliveryNote;
       }
-
-      return defaultNotes.value;
     }
 
     return availability;
