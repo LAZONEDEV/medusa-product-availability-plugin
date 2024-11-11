@@ -15,7 +15,7 @@ const Page = () => {
         </Text>
 
         <Container>
-          <CreateAvailabilityForm />
+          <CreateAvailabilityForm hasAvailabilityNotesForm />
         </Container>
       </div>
     </div>

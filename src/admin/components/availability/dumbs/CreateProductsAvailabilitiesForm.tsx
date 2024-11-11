@@ -4,6 +4,7 @@ import { ReactNode, useState } from "react";
 import type { ProductLike } from "@/admin/types";
 import { AnySchema } from "yup";
 import CreateProductAvailabilityList from "../utils/CreateProductAvailabilityList";
+import AvailabilityNotesForm from "../detail-page/AvailabilityNotesForm";
 
 interface CreateProductAvailabilitiesDumbFormProps<T> {
   initialValues: T;
@@ -11,6 +12,7 @@ interface CreateProductAvailabilitiesDumbFormProps<T> {
   validationSchema: AnySchema;
   productsToExcludeInPicker?: ProductLike[];
   selectAllProductAtInitial?: boolean;
+  hasAvailabilityNotesForm?: boolean;
   onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
 }
 
@@ -21,6 +23,7 @@ function CreateProductAvailabilitiesDumbForm<T extends FormikValues>({
   validationSchema,
   selectAllProductAtInitial = true,
   productsToExcludeInPicker,
+  hasAvailabilityNotesForm = false,
 }: CreateProductAvailabilitiesDumbFormProps<T>) {
   const [selectedProducts, setSelectedProducts] = useState<ProductLike[]>([]);
 
@@ -52,6 +55,11 @@ function CreateProductAvailabilitiesDumbForm<T extends FormikValues>({
                 productsToExcludeInPicker={productsToExcludeInPicker}
                 selectAllProductAtInitial={selectAllProductAtInitial}
               />
+              {hasAvailabilityNotesForm ? (
+                <div className="mt-4">
+                  <AvailabilityNotesForm canSubmit={false} />
+                </div>
+              ) : null}
 
               <Button
                 disabled={emptyProduct}

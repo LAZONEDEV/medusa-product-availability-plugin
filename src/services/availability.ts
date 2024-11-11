@@ -27,6 +27,8 @@ import { ExcludeExpiredAvailabilitiesOperator } from "@/utils/query-operators/ex
 import { AvailabilityStatus } from "@/enums";
 import { computeOffsetAndPage } from "@/utils/computeOffsetAndPage";
 import { UpdateAvailabilityNotesDto } from "@/api/admin/availabilities/[id]/notes/dtos/notes-availability.dtos";
+import { AvailabilitySettings } from "../models/availability-setting";
+import { AvailabilityConfigNames } from "@/enums/availability-settings-name";
 
 type InjectedDependencies = {
   availabilityProductService: AvailabilityProductService;
@@ -239,6 +241,35 @@ class AvailabilityService extends TransactionBaseService {
 
     if (!availability) {
       throw new NotFoundError(ValidationErrorMessage.availabilityNotFound);
+    }
+
+    if (
+      !(
+        availability?.withdrawNote?.length && availability?.deliveryNote?.length
+      )
+    ) {
+      const availabilitySettingsRepo =
+        this.activeManager_.getRepository(AvailabilitySettings);
+
+      const defaultNotes = await availabilitySettingsRepo.findOne({
+        where: {
+          configName: AvailabilityConfigNames.defaultWithdrawAndDeliveryInfo,
+        },
+      });
+
+      if (!defaultNotes) {
+        throw new NotFoundError(
+          ValidationErrorMessage.availabilitySettingNotFound,
+        );
+      }
+
+      if (!availability?.withdrawNote?.length) {
+        availability.withdrawNote = defaultNotes?.value?.withdrawNote;
+      }
+
+      if (!availability?.deliveryNote?.length) {
+        availability.deliveryNote = defaultNotes?.value?.deliveryNote;
+      }
     }
 
     return availability;

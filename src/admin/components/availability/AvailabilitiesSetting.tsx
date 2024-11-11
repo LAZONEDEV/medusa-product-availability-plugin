@@ -3,6 +3,7 @@ import AvailabilityNotesForm from "./detail-page/AvailabilityNotesForm";
 import { useGetAvailabilitySettings } from "../../hooks/availabilities/get-availability-setting";
 import useAvailabilitySetting from "../../hooks/availabilities/update-availability-setting";
 import { AvailabilityNotes, AvailabilitySettingName } from "../../types/api";
+import { availabilityNotesSchema } from "../../utils/validationSchema";
 
 const AvailabilitiesSetting = () => {
   const { data: settingList } = useGetAvailabilitySettings();
@@ -24,6 +25,7 @@ const AvailabilitiesSetting = () => {
           deliveryNote: withdrawAndDeliverySetting?.deliveryNote ?? "",
         }}
         onSubmit={handleUpdate}
+        validationSchema={availabilityNotesSchema}
         enableReinitialize
       >
         <Form>

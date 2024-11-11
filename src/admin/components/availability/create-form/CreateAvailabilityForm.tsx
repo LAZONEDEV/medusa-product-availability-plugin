@@ -6,8 +6,12 @@ import CreateProductAvailabilitiesDumbForm from "../dumbs/CreateProductsAvailabi
 import AvailabilityNotesForm from "../detail-page/AvailabilityNotesForm";
 
 const defaultValue = { date: new Date(), availabilityProducts: [] };
-
-const CreateAvailabilityForm = () => {
+interface CreateAvailabilityFormProps {
+  hasAvailabilityNotesForm?: boolean;
+}
+const CreateAvailabilityForm = ({
+  hasAvailabilityNotesForm = false,
+}: CreateAvailabilityFormProps) => {
   const handleSubmit = useCreateAvailabilityMutation();
 
   return (
@@ -15,11 +19,9 @@ const CreateAvailabilityForm = () => {
       initialValues={defaultValue}
       onSubmit={handleSubmit}
       validationSchema={createAvailabilitySchema}
+      hasAvailabilityNotesForm={hasAvailabilityNotesForm}
     >
       <DateField name="date" label="Choisissez la date de disponibilité" />
-      <div className="mt-4">
-        <AvailabilityNotesForm canSubmit={false} />
-      </div>
     </CreateProductAvailabilitiesDumbForm>
   );
 };

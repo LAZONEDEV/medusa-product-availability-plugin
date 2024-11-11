@@ -3,6 +3,7 @@ import { Form, Formik } from "formik";
 import { Availability } from "@/admin/types/api";
 import useAvailabilityNotes from "../../../hooks/availabilities/update-availability-notes";
 import AvailabilityNotesForm from "./AvailabilityNotesForm";
+import { availabilityNotesSchema } from "../../../utils/validationSchema";
 
 interface AvailabilityNotesProps
   extends Pick<Availability, "withdrawNote" | "deliveryNote"> {
@@ -30,6 +31,7 @@ const AvailabilityNotes = ({
         onSubmit={async (values) => {
           await handleUpdate(values);
         }}
+        validationSchema={availabilityNotesSchema}
       >
         {({ values }) => (
           <Form>
